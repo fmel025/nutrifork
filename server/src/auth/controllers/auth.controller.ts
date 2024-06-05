@@ -8,15 +8,21 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { CreateAuthDto } from '../dto/create-auth.dto';
+import { CreateUserDto } from '../dto/create-auth.dto';
 import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({
+    summary: 'Create a new user',
+    description: 'Use it to create a new user in the database',
+  })
   @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
+  create(@Body() createAuthDto: CreateUserDto) {
     return this.authService.create(createAuthDto);
   }
 
