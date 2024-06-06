@@ -1,17 +1,12 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-} from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { Controller, Post, Body } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UserService } from 'src/user/services/user.service';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly userService: UserService) {}
 
   @ApiOperation({
     summary: 'Create a new user',
@@ -19,11 +14,6 @@ export class AuthController {
   })
   @Post('register')
   create(@Body() createAuthDto: CreateUserDto) {
-    return this.authService.create(createAuthDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+    return this.userService.create(createAuthDto);
   }
 }
