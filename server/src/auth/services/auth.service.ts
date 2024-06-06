@@ -1,8 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/services/user.service';
 import { LoginDto } from '../dto';
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -15,6 +21,18 @@ export class AuthService {
     if (!userFound) {
       throw new NotFoundException('User not found');
     }
+
+    const isMatch = this.comparePasswords(user.password, userFound.password);
+    if (!isMatch) {
+      throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
+    }
+
+    const payload = { username: userFound.name, userId: userFound.id };
+
+    return {
+      user,
+      access_token: await this.jwt.signAsync(payload),
+    };
   }
 
   async comparePasswords(password: string, passwordHash: string) {
