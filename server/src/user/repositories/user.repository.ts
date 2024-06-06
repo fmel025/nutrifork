@@ -9,6 +9,21 @@ class UserRepository {
 
     return createdUser;
   }
+
+  async findOneById(id: string) {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+
+    return user;
+  }
+
+  async findOneByEmail(email: string) {
+    const user = await prisma.user.findFirst({
+      where: { email },
+    });
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();
