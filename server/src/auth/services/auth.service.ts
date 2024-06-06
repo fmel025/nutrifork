@@ -16,23 +16,31 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
   async singIn(user: LoginDto) {
-    const userFound = await this.userService.findOneByEmail(user.email);
+    try {
+      const userFound = await this.userService.findOneByEmail(user.email);
 
-    if (!userFound) {
-      throw new NotFoundException('User not found');
+      if (!userFound) {
+        throw new NotFoundException('User not found');
+      }
+
+      const isMatch = this.comparePasswords(user.password, userFound.password);
+      if (!isMatch) {
+        throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
+      }
+
+      const payload = { username: userFound.name, userId: userFound.id };
+
+      return {
+        user,
+        access_token: await this.jwt.signAsync(payload),
+      };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Error login user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-
-    const isMatch = this.comparePasswords(user.password, userFound.password);
-    if (!isMatch) {
-      throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
-    }
-
-    const payload = { username: userFound.name, userId: userFound.id };
-
-    return {
-      user,
-      access_token: await this.jwt.signAsync(payload),
-    };
   }
 
   async comparePasswords(password: string, passwordHash: string) {
