@@ -19,8 +19,21 @@ export class AuthController {
     description: 'Use it to create a new user in the database',
   })
   @Post('register')
-  create(@Body() createAuthDto: CreateUserDto) {
+  async create(@Body() createAuthDto: CreateUserDto) {
     try {
+      const userFound = await this.userService.findOneByEmail(
+        createAuthDto.email,
+      );
+      if (userFound) {
+        if (userFound.name === createAuthDto.name) {
+          throw new HttpException(
+            'Username and email already exists',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+        throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+      }
+
       return this.userService.create(createAuthDto);
     } catch (err) {
       console.log(err);
