@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { userRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateUserDto) {
-    return 'This action adds a new auth';
+  async create(createUserDto: CreateUserDto) {
+    const userCreated = await userRepository.create(createUserDto);
+    return userCreated;
   }
 
   findAll() {
@@ -14,13 +15,5 @@ export class AuthService {
 
   findOne(id: number) {
     return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }
