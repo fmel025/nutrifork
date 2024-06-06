@@ -1,4 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
@@ -14,6 +20,11 @@ export class AuthController {
   })
   @Post('register')
   create(@Body() createAuthDto: CreateUserDto) {
-    return this.userService.create(createAuthDto);
+    try {
+      return this.userService.create(createAuthDto);
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
