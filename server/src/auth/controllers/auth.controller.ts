@@ -56,4 +56,7 @@ export class AuthController {
       throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Post('login')
+  async signIn() {}
 }
