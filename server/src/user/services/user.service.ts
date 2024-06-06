@@ -12,4 +12,8 @@ export class UserService {
   findOneByEmail(email: string) {
     return userRepository.findOneByEmail(email);
   }
+
+  findIdOfUser(email: string) {
+    return userRepository.findId(email);
+  }
 }
