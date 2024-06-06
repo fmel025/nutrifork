@@ -9,7 +9,7 @@ export class UserService {
     return userCreated;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  findOneByEmail(email: string) {
+    return userRepository.findOneByEmail(email);
   }
 }
