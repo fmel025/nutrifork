@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
@@ -14,10 +14,19 @@ export class UserService {
       createUserDto.password = passwordHash;
 
       const newUser = await userRepository.create(createUserDto);
-      return newUser;
+
+      const payload = { username: newUser.name, userId: newUser.id };
+
+      return {
+        newUser,
+        access_token: await this.jwt.signAsync(payload),
+      };
     } catch (error) {
       console.log(error);
-      return new Error('Error creating user');
+      throw new HttpException(
+        'Error creating user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
