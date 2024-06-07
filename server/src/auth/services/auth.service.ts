@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -34,12 +35,9 @@ export class AuthService {
         user,
         access_token: await this.jwt.signAsync(payload),
       };
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(
-        'Error login user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException(err.message);
     }
   }
 
