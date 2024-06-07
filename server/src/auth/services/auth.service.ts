@@ -44,4 +44,7 @@ export class AuthService {
   async comparePasswords(password: string, passwordHash: string) {
     return await bcrypt.compare(password, passwordHash);
   }
+
+  async verifytoken(token: string){}
+
 }
