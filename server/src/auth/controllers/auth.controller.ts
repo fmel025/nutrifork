@@ -10,11 +10,15 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
 import { Response } from 'express';
+import { AuthService } from '../services/auth.service';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({
     summary: 'Create a new user',
