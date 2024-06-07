@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Res,
 } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDto, LoginDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
 import { Response } from 'express';
@@ -62,5 +62,36 @@ export class AuthController {
   }
 
   @Post('login')
-  async signIn() {}
+  async signIn(
+    @Body() userLogin: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    try {
+      const userFound = await this.userService.findOneByEmail(userLogin.email);
+      if (!userFound) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      const result = await this.authService.singIn(userLogin);
+
+      if (result instanceof HttpException) {
+        throw result;
+      }
+
+      const { access_token } = result;
+
+      res.cookie('access_token', access_token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 1 * 24 * 60 * 100),
+      });
+
+      res.status(201).json({
+        username: userFound.name,
+        email: userFound.email,
+      });
+    } catch (err) {
+      console.log(err.message);
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }
