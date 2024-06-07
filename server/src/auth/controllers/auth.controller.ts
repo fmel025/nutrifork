@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Res,
+  Get,
 } from '@nestjs/common';
 import { CreateUserDto, LoginDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -84,4 +85,7 @@ export class AuthController {
       email: userFound.email,
     });
   }
+
+  @Get('verify')
+  async verifyToken() {}
 }
