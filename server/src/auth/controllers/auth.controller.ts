@@ -6,11 +6,13 @@ import {
   HttpStatus,
   Res,
   Get,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto, LoginDto } from '../dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
 
 @ApiTags('Authentication')
@@ -87,5 +89,15 @@ export class AuthController {
   }
 
   @Get('verify')
-  async verifyToken() {}
+  async verifyToken(
+    @Res({ passthrough: true }) res: Response,
+    @Req() req: Request,
+  ) {
+    const { access_token } = req.cookies;
+
+    if (!access_token) throw new UnauthorizedException();
+
+    const result = await this.authService.verifytoken(access_token);
+    return result;
+  }
 }
