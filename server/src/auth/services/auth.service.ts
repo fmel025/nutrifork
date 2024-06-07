@@ -4,11 +4,13 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/services/user.service';
 import { LoginDto } from '../dto';
 import * as bcrypt from 'bcrypt';
+import { jwtConstants } from 'src/jwt.constants';
 
 @Injectable()
 export class AuthService {
@@ -45,6 +47,18 @@ export class AuthService {
     return await bcrypt.compare(password, passwordHash);
   }
 
-  async verifytoken(token: string){}
+  async verifytoken(token: string) {
+    try {
+      const payload = await this.jwt.verifyAsync(token, {
+        secret: jwtConstants.secret,
+      });
 
+      return {
+        userId: payload.userId,
+        username: payload.username,
+      };
+    } catch (err) {
+      throw new UnauthorizedException(err.message);
+    }
+  }
 }
