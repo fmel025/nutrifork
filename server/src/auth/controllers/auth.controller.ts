@@ -79,7 +79,7 @@ export class AuthController {
 
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 1 * 24 * 60 * 100),
+      expires: new Date(Date.now() + 1 * 24 * 60 * 1000),
     });
 
     res.status(201).json({
@@ -94,7 +94,6 @@ export class AuthController {
     @Req() req: Request,
   ) {
     const { access_token } = req.cookies;
-
     if (!access_token) throw new UnauthorizedException();
 
     const result = await this.authService.verifytoken(access_token);
