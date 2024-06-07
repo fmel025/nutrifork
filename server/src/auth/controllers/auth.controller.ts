@@ -59,6 +59,11 @@ export class AuthController {
     return newUser;
   }
 
+  @ApiOperation({
+    summary: 'User Login',
+    description:
+      'The method is to perform the login of an already registered user',
+  })
   @Post('login')
   async signIn(
     @Body() userLogin: LoginDto,
@@ -88,6 +93,11 @@ export class AuthController {
     });
   }
 
+  @ApiOperation({
+    summary: 'Verify user token',
+    description:
+      "It is a method to verify a user's token, mainly so that it can be used on the frontend to verify if a user has already logged in.",
+  })
   @Get('verify')
   async verifyToken(
     @Res({ passthrough: true }) res: Response,
