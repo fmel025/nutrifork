@@ -36,11 +36,6 @@ export class AuthController {
   })
   @Post('login')
   async signIn(@Body() userLogin: LoginDto) {
-    const userFound = await this.userService.findOneByEmail(userLogin.email);
-    if (!userFound) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
-
     const result = await this.authService.signIn(userLogin);
 
     return result;

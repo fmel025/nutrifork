@@ -1,64 +1,36 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/services/user.service';
 import { LoginDto } from '../dto';
 import * as bcrypt from 'bcrypt';
-import { jwtConstants } from 'src/jwt.constants';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private jwt: JwtService,
-  ) {}
-  async signIn(user: LoginDto) {
-    try {
-      const userFound = await this.userService.findOneByEmail(user.email);
+  constructor(private userService: UserService) {}
+  async signIn(userLoginDto: LoginDto) {
+    const { email, password } = userLoginDto;
 
-      if (!userFound) {
-        throw new NotFoundException('User not found');
-      }
+    const userFound = await this.userService.findOneByEmail(email);
 
-      const isMatch = this.comparePasswords(user.password, userFound.password);
-      if (!isMatch) {
-        throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
-      }
-
-      const payload = { username: userFound.name, userId: userFound.id };
-
-      return {
-        user,
-        access_token: await this.jwt.signAsync(payload),
-      };
-    } catch (err) {
-      console.log(err);
-      throw new InternalServerErrorException(err.message);
+    if (!userFound) {
+      throw new UnauthorizedException('Invalid credentials');
     }
+
+    const doesPasswordMatch = this.comparePasswords(
+      password,
+      userFound.password,
+    );
+
+    if (!doesPasswordMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // TODO: Return here the jwt.
+    return {
+      user: userLoginDto,
+    };
   }
 
   private async comparePasswords(password: string, encryptedPassword: string) {
     return await bcrypt.compare(password, encryptedPassword);
-  }
-
-  async verifytoken(token: string) {
-    try {
-      const payload = await this.jwt.verifyAsync(token, {
-        secret: jwtConstants.secret,
-      });
-
-      return {
-        userId: payload.userId,
-        username: payload.username,
-      };
-    } catch (err) {
-      throw new UnauthorizedException(err.message);
-    }
   }
 }
