@@ -18,7 +18,7 @@ export class AuthService {
     private userService: UserService,
     private jwt: JwtService,
   ) {}
-  async singIn(user: LoginDto) {
+  async signIn(user: LoginDto) {
     try {
       const userFound = await this.userService.findOneByEmail(user.email);
 
@@ -43,8 +43,8 @@ export class AuthService {
     }
   }
 
-  async comparePasswords(password: string, passwordHash: string) {
-    return await bcrypt.compare(password, passwordHash);
+  private async comparePasswords(password: string, encryptedPassword: string) {
+    return await bcrypt.compare(password, encryptedPassword);
   }
 
   async verifytoken(token: string) {

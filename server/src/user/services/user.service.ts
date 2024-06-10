@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
@@ -9,32 +14,30 @@ export class UserService {
   constructor(private readonly jwt: JwtService) {}
 
   async create(createUserDto: CreateUserDto) {
-    try {
-      const passwordHash = await bcrypt.hash(createUserDto.password, 10);
-      createUserDto.password = passwordHash;
+    const { email } = createUserDto;
 
-      const newUser = await userRepository.create(createUserDto);
+    await this.validateEmail(email);
 
-      const payload = { username: newUser.name, userId: newUser.id };
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
-      return {
-        newUser,
-        access_token: await this.jwt.signAsync(payload),
-      };
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(
-        'Error creating user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    createUserDto.password = hashedPassword;
+
+    const newUser = await userRepository.create(createUserDto);
+
+    delete newUser.password;
+
+    return newUser;
+  }
+
+  async validateEmail(email: string): Promise<void> {
+    const existingUser = await userRepository.findOneByEmail(email);
+
+    if (existingUser) {
+      throw new ConflictException(`The email ${email} is already registered`);
     }
   }
 
   findOneByEmail(email: string) {
     return userRepository.findOneByEmail(email);
-  }
-
-  findIdOfUser(email: string) {
-    return userRepository.findId(email);
   }
 }
