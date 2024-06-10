@@ -6,9 +6,7 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(private userService: UserService) {}
-  async signIn(userLoginDto: LoginDto) {
-    const { email, password } = userLoginDto;
-
+  async signIn(email: string, password: string) {
     const userFound = await this.userService.findOneByEmail(email);
 
     if (!userFound) {
@@ -24,10 +22,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    delete userFound.password;
     // TODO: Return here the jwt.
-    return {
-      user: userLoginDto,
-    };
+    return userFound;
   }
 
   private async comparePasswords(password: string, encryptedPassword: string) {

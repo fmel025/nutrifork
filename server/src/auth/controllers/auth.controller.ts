@@ -35,8 +35,9 @@ export class AuthController {
       'The method is to perform the login of an already registered user',
   })
   @Post('login')
-  async signIn(@Body() userLogin: LoginDto) {
-    const result = await this.authService.signIn(userLogin);
+  async signIn(@Body() userLoginDto: LoginDto) {
+    const { email, password } = userLoginDto;
+    const result = await this.authService.signIn(email, password);
 
     return result;
   }
