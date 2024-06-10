@@ -22,16 +22,3 @@ export class CreateUserDto {
   @IsNumber()
   age: number;
 }
-
-export class LoginDto {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}

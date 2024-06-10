@@ -9,7 +9,7 @@ import {
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateUserDto, LoginDto } from '../dto/create-user.dto';
+import { CreateUserDto, LoginDto } from '../dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
 import { Request, Response } from 'express';
