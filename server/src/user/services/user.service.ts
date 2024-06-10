@@ -1,17 +1,11 @@
-import {
-  ConflictException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly jwt: JwtService) {}
+  constructor() {}
 
   async create(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
@@ -37,7 +31,7 @@ export class UserService {
     }
   }
 
-  findOneByEmail(email: string) {
-    return userRepository.findOneByEmail(email);
+  async findOneByEmail(email: string) {
+    return await userRepository.findOneByEmail(email);
   }
 }
