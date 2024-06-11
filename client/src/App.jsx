@@ -1,14 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    <h1>Hello World</h1>
-    </>
+    <div className="h-40 w-40 text-black">
+      <h1 className="font-Poppins">Hola mundo</h1>
+      <img src="/src/assets/nutrifork-logo.webp" className="w-full" />
+    </div>
   )
 }
 
