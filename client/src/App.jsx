@@ -1,9 +1,18 @@
+import Login from './pages/login/Login'
+import Home from './pages/home/Home'
+import { 
+  Route, 
+  BrowserRouter as Router, 
+  Routes } from 'react-router-dom'
+
 function App() {
   return (
-    <div className="h-40 w-40 text-black">
-      <h1 className="font-Poppins">Hola mundo</h1>
-      <img src="/src/assets/nutrifork-logo.webp" className="w-full" />
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/login' Component={ Login }></Route>
+        <Route path='/' Component={ Home }></Route>
+      </Routes>
+    </Router>
   )
 }
 
