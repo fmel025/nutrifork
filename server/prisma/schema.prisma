@@ -20,4 +20,5 @@ model User {
   email    String
   password String
   active   Boolean @default(false)
+  avatar   String?
 }
