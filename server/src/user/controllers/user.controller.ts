@@ -1,5 +1,6 @@
 import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
+import { IUserPayload } from '@Common/types';
 import { Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -13,8 +14,7 @@ export class UserController {
   })
   @UseGuards(JwtAuthGuard)
   @Post('/me')
-  async profile(@User() user) {
-    console.log(user);
-    return {};
+  async profile(@User() loggedUser: IUserPayload) {
+    return loggedUser;
   }
 }
