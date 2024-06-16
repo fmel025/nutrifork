@@ -7,6 +7,8 @@ class UserRepository {
       data: user,
     });
 
+    delete createdUser.password;
+
     return createdUser;
   }
 

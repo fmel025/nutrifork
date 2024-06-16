@@ -18,8 +18,6 @@ export class UserService {
 
     const newUser = await userRepository.create(createUserDto);
 
-    delete newUser.password;
-
     return newUser;
   }
 
