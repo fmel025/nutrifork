@@ -9,6 +9,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Nutrifork API')
     .setDescription('This is the nutrifork endpoints documentation')
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
 
