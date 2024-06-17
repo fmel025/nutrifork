@@ -20,6 +20,7 @@
     "paths": {
       "@Common/*": ["./src/common/*"],
       "@Auth/*": ["./src/auth/*"],
+      "@Config/*": ["./src/config/*"],
     }
   }
 }
