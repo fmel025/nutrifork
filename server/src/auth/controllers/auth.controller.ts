@@ -1,19 +1,39 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
+import { CreateUserDto, LoginDto } from '../dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
+import { AuthService } from '../services/auth.service';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({
     summary: 'Create a new user',
     description: 'Use it to create a new user in the database',
   })
   @Post('register')
-  create(@Body() createAuthDto: CreateUserDto) {
-    return this.userService.create(createAuthDto);
+  async create(@Body() createAuthDto: CreateUserDto) {
+    const result = await this.userService.create(createAuthDto);
+
+    return result;
+  }
+
+  @ApiOperation({
+    summary: 'User Login',
+    description:
+      'The method is to perform the login of an already registered user',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  async signIn(@Body() userLoginDto: LoginDto) {
+    const { email, password } = userLoginDto;
+    const result = await this.authService.signIn(email, password);
+
+    return result;
   }
 }

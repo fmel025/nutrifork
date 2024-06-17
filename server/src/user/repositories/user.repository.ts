@@ -7,6 +7,8 @@ class UserRepository {
       data: user,
     });
 
+    delete createdUser.password;
+
     return createdUser;
   }
 
@@ -22,6 +24,14 @@ class UserRepository {
     const user = await prisma.user.findFirst({
       where: { email },
     });
+    return user;
+  }
+
+  async findOneByUsername(username: string) {
+    const user = await prisma.user.findFirst({
+      where: { username },
+    });
+
     return user;
   }
 }
