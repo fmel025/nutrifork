@@ -26,6 +26,14 @@ class UserRepository {
     });
     return user;
   }
+
+  async findOneByUsername(username: string) {
+    const user = await prisma.user.findFirst({
+      where: { username },
+    });
+
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();

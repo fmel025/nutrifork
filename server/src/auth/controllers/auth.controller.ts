@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { CreateUserDto, LoginDto } from '../dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from 'src/user/services/user.service';
@@ -34,6 +28,7 @@ export class AuthController {
     description:
       'The method is to perform the login of an already registered user',
   })
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() userLoginDto: LoginDto) {
     const { email, password } = userLoginDto;
