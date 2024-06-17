@@ -31,15 +31,10 @@ const PrefDropdown = ({ label, options, placeholder }) => {
     return (
         <div className="relative w-auto">
             <p className="py-3 text-sm md:text-base text-black font-normal">{label}</p>
-            <div
-                className="select select-md rounded-md select-bordered focus:border-2 focus:outline-0 text-base flex items-center w-full"
-                ref={buttonRef}
-                onClick={toggleDropdown}
-            >
-                {placeholder}
+            <div className="select select-md rounded-md select-bordered focus:border-2 focus:outline-0 text-xs md:text-sm flex items-center w-full" ref={buttonRef} onClick={toggleDropdown}> {placeholder}
             </div>
             {dropdownOpen && (
-                <div ref={dropdownRef} className="absolute z-10 bg-white rounded-md shadow-[0_4px_10px_2px_rgb(0,0,0,0.25)] w-80 h-28 overflow-y-auto mt-1">
+                <div ref={dropdownRef} className="absolute z-10 bg-white rounded-md shadow-[0_4px_10px_2px_rgb(0,0,0,0.25)] w-full md:w-56 lg:w-fit h-28 overflow-y-auto mt-1">
                     <ul className="h-auto p-2">
                         {options.map((option, index) => (
                             <li className="mb-1" key={index}>
@@ -50,9 +45,7 @@ const PrefDropdown = ({ label, options, placeholder }) => {
                             </li>
                         ))}
                         <Link>
-                            <button className="btn btn-sm text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green mt-2 h-10 w-full">
-                                Seleccionar
-                            </button>
+                            <button className="btn btn-sm text-center text-sm font-normal text-white border-0 bg-dark-green hover:bg-accent-green mt-2 h-10 w-full">Seleccionar</button>
                         </Link>
                     </ul>
                 </div>
