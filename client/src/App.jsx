@@ -3,6 +3,7 @@ import Login from './pages/login/Login'
 import Settings from './pages/settings/Settings'
 import Error404 from './pages/error404/Error404'
 import ProtectedRoute from './components/utils/ProtectedRoute'
+import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
 import { useEffect, useState } from 'react'
 import {
   Route,
@@ -27,7 +28,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/iniciar-sesion' element={<Login />} />
+        <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
+          <Route path='/iniciar-sesion' element={<Login />} />
+        </Route>
         <Route path='/' element={<Home />} />
         <Route element={<ProtectedRoute canActivate={loggedIn} />}>
           <Route path='/ajustes' element={<Settings />} />

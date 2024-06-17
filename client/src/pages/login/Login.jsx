@@ -16,7 +16,6 @@ export default function Login() {
             if (token) {
                 localStorage.setItem('token', token);
                 navigate('/');
-                window.location.reload();
             } else {
                 console.log('Login failed. Invalid credentials.');
             }
