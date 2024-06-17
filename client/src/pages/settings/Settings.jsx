@@ -33,7 +33,6 @@ export default function Settings() {
                     <a href="#detalles" className="flex justify-start btn btn-sm text-xs md:text-sm lg:text-base font-normal text-white border-0 shadow-none hover:bg-hover-green h-10 w-full">Detalles de la cuenta</a>
                 </div>
 
-
                 <div className="flex-1">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl text-black font-medium">Ajustes</h1>
 
@@ -45,10 +44,7 @@ export default function Settings() {
                             </div>
                         </div>
 
-                        <button className="btn btn-sm flex lg:justify-between items px-5 mt-2 text-xs md:text-sm lg:text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-1/2">
-                            Cambiar avatar
-                            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hidden" fill="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><title>edit [#1479]</title><desc>Created with Sketch.</desc><defs></defs><g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"><g id="Dribbble-Light-Preview" transform="translate(-99.000000, -400.000000)" fill="#ffffff"><g id="icons" transform="translate(56.000000, 160.000000)"><path d="M61.9,258.010643 L45.1,258.010643 L45.1,242.095788 L53.5,242.095788 L53.5,240.106431 L43,240.106431 L43,260 L64,260 L64,250.053215 L61.9,250.053215 L61.9,258.010643 Z M49.3,249.949769 L59.63095,240 L64,244.114985 L53.3341,254.031929 L49.3,254.031929 L49.3,249.949769 Z" id="edit-[#1479]"></path></g></g></g></g></svg>
-                        </button>
+                        <input className="w-4/6 md:w-full mt-4 text-base text-black border rounded-lg cursor-pointer bg-dark-green dark:text-white dark:bg-dark-green" type="file" />
                     </div>
 
                     <form className="w-full text-sm md:text-base">
@@ -82,10 +78,7 @@ export default function Settings() {
                         </div>
                     </div>
 
-                    <button className="btn btn-sm flex lg:justify-between px-5 mt-2 text-xs md:text-sm lg:text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full">
-                        Cambiar avatar
-                        <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hidden lg:block" fill="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><title>edit [#1479]</title><desc>Created with Sketch.</desc><defs></defs><g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"><g id="Dribbble-Light-Preview" transform="translate(-99.000000, -400.000000)" fill="#ffffff"><g id="icons" transform="translate(56.000000, 160.000000)"><path d="M61.9,258.010643 L45.1,258.010643 L45.1,242.095788 L53.5,242.095788 L53.5,240.106431 L43,240.106431 L43,260 L64,260 L64,250.053215 L61.9,250.053215 L61.9,258.010643 Z M49.3,249.949769 L59.63095,240 L64,244.114985 L53.3341,254.031929 L49.3,254.031929 L49.3,249.949769 Z" id="edit-[#1479]"></path></g></g></g></g></svg>
-                    </button>
+                    <input className="w-4/6 md:w-full mt-4 text-base text-black border rounded-lg cursor-pointer bg-dark-green dark:text-white dark:bg-dark-green" type="file" />
                 </div>
             </section>
 
