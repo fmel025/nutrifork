@@ -15,8 +15,9 @@ export default function Navbar() {
                             <svg viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 5C14 6.10457 13.1046 7 12 7C10.8954 7 10 6.10457 10 5C10 3.89543 10.8954 3 12 3C13.1046 3 14 3.89543 14 5Z" fill="#000000"></path> <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="#000000"></path> <path d="M12 21C13.1046 21 14 20.1046 14 19C14 17.8954 13.1046 17 12 17C10.8954 17 10 17.8954 10 19C10 20.1046 10.8954 21 12 21Z" fill="#000000"></path> </g></svg>
                         </div>
                         <ul tabIndex={0} className="menu dropdown-content p-2 my-6 gap-2 bg-white text-sm md:text-base text-black font-normal rounded-md w-52 shadow-[0_2px_10px_2px_rgb(0,0,0,0.05)]">
-                            <li className="rounded-md hover:bg-accent-green hover:text-white"><a>Item 1</a></li>
-                            <li className="rounded-md hover:bg-accent-green hover:text-white"><a>Item 2</a></li>
+                            <li className="rounded-md hover:bg-accent-green hover:text-white"><a>Logueado</a></li>
+                            <li className="rounded-md hover:bg-accent-green hover:text-white"><a>No logueado</a></li>
+                            <li className="rounded-md hover:bg-accent-green hover:text-white"><a>Cerrar sesión</a></li>
                         </ul>
                     </div>
                 </ul>
