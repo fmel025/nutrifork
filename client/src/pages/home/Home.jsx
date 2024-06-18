@@ -6,7 +6,7 @@ export default function Home({ loggedIn }) {
         <div className="flex flex-col justify-between font-Poppins min-h-screen w-full bg-white">
             <Navbar loggedIn={loggedIn} />
 
-            <Footer />
+            <Footer loggedIn={loggedIn} />
         </div>
     )
 }
