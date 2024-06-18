@@ -3,7 +3,7 @@ import AuthContext from "../utils/AuthContext";
 import { useContext } from "react";
 
 export default function Navbar() {
-    const { loggedIn } = useContext(AuthContext);
+    const { loggedIn, logout } = useContext(AuthContext);
 
     return (
         <div className="navbar bg-white z-50 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] font-Poppins">
@@ -13,7 +13,7 @@ export default function Navbar() {
             <div className="flex-none">
                 <ul className="menu menu-horizontal gap-4">
                     <Link to={'/'}><li className="hidden md:block btn btn-sm h-10 border-0 text-sm md:text-base text-black font-normal rounded-md shadow-none hover:bg-accent-green hover:text-white"><a>Recetas</a></li></Link>
-
+                    
                     {loggedIn ? (
                         <div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-sm btn-circle h-10 w-10 hover:bg-gray-200 border-0 shadow-none">
@@ -22,7 +22,7 @@ export default function Navbar() {
                             <ul tabIndex={0} className="menu dropdown-content p-2 my-6 gap-2 bg-white text-sm md:text-base text-black font-normal rounded-md w-52 shadow-[0_2px_10px_2px_rgb(0,0,0,0.05)]">
                                 <Link><li className="rounded-md hover:bg-accent-green hover:text-white"><a>Perfil</a></li></Link>
                                 <Link to={'/ajustes'}><li className="rounded-md hover:bg-accent-green hover:text-white"><a>Ajustes</a></li></Link>
-
+                                <li className="rounded-md hover:bg-accent-green hover:text-white" onClick={logout}><a>Cerrar sesión</a></li>
                             </ul>
                         </div>
                     ) : (
