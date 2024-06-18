@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import AuthContext from "../utils/AuthContext";
+import { useContext } from "react";
 
-export default function Navbar({ loggedIn }) {
+export default function Navbar() {
+    const { loggedIn } = useContext(AuthContext);
+
     return (
         <div className="navbar bg-white z-50 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] font-Poppins">
             <div className="flex-1 px-5">

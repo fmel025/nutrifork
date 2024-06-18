@@ -1,6 +1,10 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom'
+import AuthContext from '../utils/AuthContext';
 
-export default function Footer({ loggedIn }) {
+export default function Footer() {
+    const { loggedIn } = useContext(AuthContext);
+
     return (
         <footer className="footer items-center justify-center md:items-start md:justify-normal p-10 bg-white shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] text-sm md:text-base text-black font-normal font-Poppins">
             <aside>

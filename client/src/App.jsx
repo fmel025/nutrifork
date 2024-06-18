@@ -10,6 +10,7 @@ import {
   BrowserRouter as Router,
   Routes
 } from 'react-router-dom'
+import { AuthProvider } from './components/utils/AuthContext'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,18 +27,20 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
-          <Route path='/iniciar-sesion' element={<Login />} />
-        </Route>
-        <Route path='/' element={<Home loggedIn={loggedIn} />} />
-        <Route element={<ProtectedRoute canActivate={loggedIn} />}>
-          <Route path='/ajustes' element={<Settings />} />
-        </Route>
-        <Route path='*' element={<Error404 />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
+            <Route path='/iniciar-sesion' element={<Login />} />
+          </Route>
+          <Route path='/' element={<Home loggedIn={loggedIn} />} />
+          <Route element={<ProtectedRoute canActivate={loggedIn} />}>
+            <Route path='/ajustes' element={<Settings />} />
+          </Route>
+          <Route path='*' element={<Error404 />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 
