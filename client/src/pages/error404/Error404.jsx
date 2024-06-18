@@ -8,7 +8,7 @@ export default function Error404() {
             <Navbar />
 
             <section className="grid lg:grid-cols-2 h-full">
-                <div className="flex flex-col justify-center gap-4 lg:gap-0 p-6 md:px-20 lg:p-20">
+                <div className="flex flex-col justify-center md:items-center lg:items-start gap-4 lg:gap-0 p-6 md:px-20 lg:p-20">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl text-black font-medium">¡Ups! Página no encontrada</h1>
                     <p className="lg:py-10 text-base lg:text-lg text-black font-normal">Lo sentimos, parece que la página que estabas buscando no existe o ha sido eliminada.</p>
                     <Link to={'/'}><button className="btn btn-sm text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full md:w-96 lg:w-64">Regresar al inicio</button></Link>

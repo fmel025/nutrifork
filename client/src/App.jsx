@@ -31,7 +31,7 @@ function App() {
         <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
           <Route path='/iniciar-sesion' element={<Login />} />
         </Route>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home loggedIn={loggedIn} />} />
         <Route element={<ProtectedRoute canActivate={loggedIn} />}>
           <Route path='/ajustes' element={<Settings />} />
         </Route>
