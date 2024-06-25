@@ -14,11 +14,12 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  fullName String
-  username String
-  email    String
-  password String
-  active   Boolean @default(false)
-  avatar   String?
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  fullName       String
+  username       String
+  email          String
+  password       String
+  active         Boolean @default(false)
+  avatar         String?
+  avatarPublicId String?
 }
