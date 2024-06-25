@@ -3,10 +3,14 @@ import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UploadImageService } from '@UploadImage/services';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly uploadImageService: UploadImageService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const { email, username } = createUserDto;
@@ -25,6 +29,10 @@ export class UserService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async image(file: Express.Multer.File) {
+    return await this.uploadImageService.uploadFile(file, 'avatar');
   }
 
   async validateEmail(email: string): Promise<void> {
