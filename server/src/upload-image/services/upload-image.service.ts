@@ -1,5 +1,5 @@
 import { CloudinaryResponse } from '@UploadImage/types';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import * as streamifier from 'streamifier';
@@ -51,5 +51,13 @@ export class UploadImageService {
         reject(error);
       }
     });
+  }
+
+  async deleteFile(publicId: string): Promise<void> {
+    try {
+      await cloudinary.uploader.destroy(publicId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete image');
+    }
   }
 }

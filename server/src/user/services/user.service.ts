@@ -40,7 +40,7 @@ export class UserService {
     }
 
     if (loggedUser.avatar && loggedUser.avatarPublicId) {
-      // Delete the avatar from the server
+      await this.uploadImageService.deleteFile(loggedUser.avatarPublicId);
     }
 
     const cloudinaryResponse = await this.uploadImageService.uploadFile(
