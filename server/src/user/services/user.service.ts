@@ -39,14 +39,18 @@ export class UserService {
       throw new ConflictException('User not found');
     }
 
-    if (loggedUser.avatar && loggedUser.avatarPublicId) {
-      await this.uploadImageService.deleteFile(loggedUser.avatarPublicId);
-    }
+    const deleteOldAvatar =
+      loggedUser.avatar && loggedUser.avatarPublicId
+        ? this.uploadImageService.deleteFile(loggedUser.avatarPublicId)
+        : Promise.resolve();
 
-    const cloudinaryResponse = await this.uploadImageService.uploadFile(
-      file,
-      'avatar',
-    );
+    const uploadNewAvatar = this.uploadImageService.uploadFile(file, 'avatar');
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, cloudinaryResponse] = await Promise.all([
+      deleteOldAvatar,
+      uploadNewAvatar,
+    ]);
 
     const { public_id, secure_url } = cloudinaryResponse;
 

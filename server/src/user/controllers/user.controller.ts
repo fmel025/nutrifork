@@ -49,7 +49,7 @@ export class UserController {
       },
     },
   })
-  @Patch()
+  @Patch('avatar')
   async updateAvatar(
     @UploadedFile()
     file: Express.Multer.File,
