@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
@@ -33,6 +37,12 @@ export class UserService {
   }
 
   async updateAvatar(file: Express.Multer.File, user: UserPayload) {
+    if (!file.mimetype.startsWith('image/') || file.mimetype === 'image/gif') {
+      throw new BadRequestException(
+        'Invalid file type. Only non-GIF images are allowed.',
+      );
+    }
+
     const loggedUser = await this.findOneById(user.id);
 
     if (!loggedUser) {
