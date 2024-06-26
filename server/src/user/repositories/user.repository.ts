@@ -1,8 +1,6 @@
 import { prisma } from '@Common/database';
-import { User } from '@prisma/client';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
-
-type UpdateUserType = Partial<Omit<User, 'id'>>;
+import { UpdateUserType } from '@User/types';
+import { CreateUserDto } from '@Auth/dto';
 
 class UserRepository {
   async create(user: CreateUserDto) {
