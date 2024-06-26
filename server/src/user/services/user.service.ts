@@ -4,6 +4,7 @@ import { userRepository } from '../repositories/user.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UploadImageService } from '@UploadImage/services';
+import { UserPayload } from '@Common/types';
 
 @Injectable()
 export class UserService {
@@ -31,8 +32,33 @@ export class UserService {
     };
   }
 
-  async image(file: Express.Multer.File) {
-    return await this.uploadImageService.uploadFile(file, 'avatar');
+  async updateAvatar(file: Express.Multer.File, user: UserPayload) {
+    const loggedUser = await this.findOneById(user.id);
+
+    if (!loggedUser) {
+      throw new ConflictException('User not found');
+    }
+
+    if (loggedUser.avatar && loggedUser.avatarPublicId) {
+      // Delete the avatar from the server
+    }
+
+    const cloudinaryResponse = await this.uploadImageService.uploadFile(
+      file,
+      'avatar',
+    );
+
+    const { public_id, secure_url } = cloudinaryResponse;
+
+    await userRepository.update(loggedUser.id, {
+      avatar: secure_url,
+      avatarPublicId: public_id,
+    });
+
+    return {
+      avatar: secure_url,
+      avatarPublicId: public_id,
+    };
   }
 
   async validateEmail(email: string): Promise<void> {
@@ -55,5 +81,9 @@ export class UserService {
 
   async findOneByEmail(email: string) {
     return await userRepository.findOneByEmail(email);
+  }
+
+  async findOneById(id: string) {
+    return await userRepository.findOneById(id);
   }
 }

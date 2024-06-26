@@ -1,6 +1,6 @@
 import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
-import { IUserPayload } from '@Common/types';
+import { UserPayload } from '@Common/types';
 import { UserService } from '@User/services/user.service';
 import {
   Controller,
@@ -21,7 +21,8 @@ import {
 
 @ApiTags('User')
 @Controller('user')
-
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -30,7 +31,7 @@ export class UserController {
     description: 'Use it to create a new user in the database',
   })
   @Post('/me')
-  async profile(@User() loggedUser: IUserPayload) {
+  async profile(@User() loggedUser: UserPayload) {
     return loggedUser;
   }
 
@@ -52,7 +53,8 @@ export class UserController {
   async updateAvatar(
     @UploadedFile()
     file: Express.Multer.File,
+    @User() loggedUser: UserPayload,
   ) {
-    return await this.userService.image(file);
+    return await this.userService.updateAvatar(file, loggedUser);
   }
 }
