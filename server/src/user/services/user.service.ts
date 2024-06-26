@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
@@ -9,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UploadImageService } from '@UploadImage/services';
 import { UserPayload } from '@Common/types';
+import { UpdateUserDto } from '@User/dto';
 
 @Injectable()
 export class UserService {
@@ -33,6 +35,33 @@ export class UserService {
 
     return {
       accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async update(loggedUser: UserPayload, data: UpdateUserDto) {
+    const { email, password, username } = data;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      data.password = hashedPassword;
+    }
+
+    if (email) {
+      await this.validateEmail(email);
+    }
+
+    if (username) {
+      await this.validateUsername(username);
+    }
+
+    const updatedUser = await userRepository.update(loggedUser.id, data);
+
+    delete updatedUser.password;
+    delete updatedUser.avatarPublicId;
+
+    return {
+      statusCode: HttpStatus.OK,
+      data: updatedUser,
+      message: 'User updated successfully',
     };
   }
 

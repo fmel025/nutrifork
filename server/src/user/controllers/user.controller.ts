@@ -1,11 +1,13 @@
 import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
 import { UserPayload } from '@Common/types';
+import { UpdateUserDto } from '@User/dto';
 import { UserService } from '@User/services/user.service';
 import {
+  Body,
   Controller,
+  Get,
   Patch,
-  Post,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -27,12 +29,24 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({
-    summary: 'Create a new user',
-    description: 'Use it to create a new user in the database',
+    summary: 'Access user information',
+    description: 'Use it to access user account information',
   })
-  @Post('/me')
-  async profile(@User() loggedUser: UserPayload) {
+  @Get('profile')
+  async getProfileData(@User() loggedUser: UserPayload) {
     return loggedUser;
+  }
+
+  @ApiOperation({
+    summary: 'Update user information',
+    description: 'Use it to update user account information',
+  })
+  @Patch()
+  async updateUserInfo(
+    @User() loggedUser: UserPayload,
+    @Body() data: UpdateUserDto,
+  ) {
+    return await this.userService.update(loggedUser, data);
   }
 
   @UseInterceptors(FileInterceptor('avatar'))
