@@ -34,7 +34,7 @@ export class UserController {
   })
   @Get('profile')
   async getProfileData(@User() loggedUser: UserPayload) {
-    return loggedUser;
+    return this.userService.getProfileInfo(loggedUser);
   }
 
   @ApiOperation({

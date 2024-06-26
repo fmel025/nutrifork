@@ -122,6 +122,19 @@ export class UserService {
     }
   }
 
+  async getProfileInfo(loggedUser: UserPayload) {
+    const user = await userRepository.findOneById(loggedUser.id);
+
+    delete user.password;
+    delete user.avatarPublicId;
+
+    return {
+      statusCode: HttpStatus.OK,
+      data: user,
+      message: 'User found successfully',
+    };
+  }
+
   async findOneByEmail(email: string) {
     return await userRepository.findOneByEmail(email);
   }
