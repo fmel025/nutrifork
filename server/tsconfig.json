@@ -21,6 +21,8 @@
       "@Common/*": ["./src/common/*"],
       "@Auth/*": ["./src/auth/*"],
       "@Config/*": ["./src/config/*"],
+      "@UploadImage/*": ["./src/upload-image/*"],
+      "@User/*": ["./src/user/*"],
     }
   }
 }

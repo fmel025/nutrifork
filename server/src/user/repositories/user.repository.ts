@@ -1,5 +1,7 @@
 import { prisma } from '@Common/database';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { UpdateUserType } from '@User/types';
+import { CreateUserDto } from '@Auth/dto';
+import { UpdateUserDto } from '@User/dto';
 
 class UserRepository {
   async create(user: CreateUserDto) {
@@ -30,6 +32,15 @@ class UserRepository {
   async findOneByUsername(username: string) {
     const user = await prisma.user.findFirst({
       where: { username },
+    });
+
+    return user;
+  }
+
+  async update(id: string, data: UpdateUserType | UpdateUserDto) {
+    const user = await prisma.user.update({
+      where: { id },
+      data: data as UpdateUserType,
     });
 
     return user;
