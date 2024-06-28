@@ -8,7 +8,7 @@ export function successResponse<T>(
 ): HttpSuccessResponse<T> {
   return {
     statusCode: statusCode ?? HttpStatus.OK,
-    data,
+    data: data,
     message: message ?? 'success',
   };
 }
