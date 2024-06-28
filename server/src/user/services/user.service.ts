@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
