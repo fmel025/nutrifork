@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
@@ -11,6 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UploadImageService } from '@UploadImage/services';
 import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
+import { successResponse } from '@Common/utils/success-response';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -58,11 +59,7 @@ export class UserService {
     delete updatedUser.password;
     delete updatedUser.avatarPublicId;
 
-    return {
-      statusCode: HttpStatus.OK,
-      data: updatedUser,
-      message: 'User updated successfully',
-    };
+    return successResponse(updatedUser, 'User updated successfully');
   }
 
   async updateAvatar(file: Express.Multer.File, user: UserPayload) {
@@ -98,28 +95,12 @@ export class UserService {
       avatarPublicId: public_id,
     });
 
-    return {
+    const responsePayload: Record<string, string> = {
       avatar: secure_url,
       avatarPublicId: public_id,
     };
-  }
 
-  async validateEmail(email: string): Promise<void> {
-    const existingUser = await userRepository.findOneByEmail(email);
-
-    if (existingUser) {
-      throw new ConflictException(`The email ${email} is already registered`);
-    }
-  }
-
-  async validateUsername(username: string): Promise<void> {
-    const existingUser = await userRepository.findOneByUsername(username);
-
-    if (existingUser) {
-      throw new ConflictException(
-        `The username ${username} is already registered`,
-      );
-    }
+    return successResponse(responsePayload, 'Avatar updated successfully');
   }
 
   async getProfileInfo(loggedUser: UserPayload) {
@@ -128,11 +109,7 @@ export class UserService {
     delete user.password;
     delete user.avatarPublicId;
 
-    return {
-      statusCode: HttpStatus.OK,
-      data: user,
-      message: 'User found successfully',
-    };
+    return successResponse<User>(user, 'User found successfully');
   }
 
   async findOneByEmail(email: string) {
@@ -141,5 +118,23 @@ export class UserService {
 
   async findOneById(id: string) {
     return await userRepository.findOneById(id);
+  }
+
+  private async validateEmail(email: string): Promise<void> {
+    const existingUser = await userRepository.findOneByEmail(email);
+
+    if (existingUser) {
+      throw new ConflictException(`The email ${email} is already registered`);
+    }
+  }
+
+  private async validateUsername(username: string): Promise<void> {
+    const existingUser = await userRepository.findOneByUsername(username);
+
+    if (existingUser) {
+      throw new ConflictException(
+        `The username ${username} is already registered`,
+      );
+    }
   }
 }
