@@ -22,52 +22,49 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Nutrifork API
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Descripción
 
-## Installation
+Este es la API utilizada para manejar la información de las recetas, usuarios e interacciones con estas mismas.
 
+## Requisitos de instalación
+
+- NodeJS V20+.
+- Poseer una cuenta en cloudinary (para cambiar foto de perfil).
+
+## Manual de instalación
+
+1. Crear un archivo **.env**.
+2. Copiar las variables de entorno del archivo .dev.env al archivo .env
+3. Reemplazar las variables copiadas, con las que utilizaremos (Cloudinary credentials, MongoDB URI y JWT SECRET para el token).
+4. Ejecutar el siguiente comando desde la raiz del directorio server:
 ```bash
-$ npm install
+npm install
 ```
 
-## Running the app
+## Instrucciones para levantar el proyecto
 
+1. Ejecutar el siguiente comando desde la raiz del directorio server
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Test
+Y listo, con eso ya puedes utilizar la API del proyecto.
 
-```bash
-# unit tests
-$ npm run test
+## Documentación de los endpoints.
+1. Si desea consultar los endpoints de la API acceda al enlace siguiente [localhost:3000/docs](http://localhost:3000/docs).
 
-# e2e tests
-$ npm run test:e2e
+Puede que algunos endpoints no sean del todo públicos ya que se utilizan preferencias de los usuarios, para ello al momento de probar, copie el token de su login y acceda al botón de Authorize, donde se le solicitara, tras haberlo aceptado, ya puede acceder a todas las funcionalidades.
 
-# test coverage
-$ npm run test:cov
-```
+<img src="assets/nutrifork-authorize.png" alt="Ejemplo documentación nutrifork" />
 
-## Support
+<img src="assets/nutrifork-bearer-example.png" alt="Ejemplo bearer token nutrifork" />
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Créditos
 
-## Stay in touch
+- Autor de NestJS - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+  
+## Licencia del framework
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Nest posee una licencia [MIT](LICENSE).
