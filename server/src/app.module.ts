@@ -6,7 +6,13 @@ import { UploadImageModule } from '@UploadImage/upload-image.module';
 import { RecipeModule } from './recipe/recipe.module';
 
 @Module({
-  imports: [AuthModule, UserModule, ConfigModule, UploadImageModule, RecipeModule],
+  imports: [
+    AuthModule,
+    UserModule,
+    ConfigModule,
+    UploadImageModule,
+    RecipeModule,
+  ],
   controllers: [],
   providers: [],
 })
