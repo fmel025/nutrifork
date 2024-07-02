@@ -12,6 +12,7 @@ import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
 import { successResponse } from '@Common/utils/success-response';
 import { User } from '@prisma/client';
+// import { prisma } from '@Common/database';
 
 @Injectable()
 export class UserService {
@@ -33,6 +34,17 @@ export class UserService {
     const newUser = await userRepository.create(createUserDto);
 
     const payload = { id: newUser.id, email: newUser.email };
+
+    // prisma.user.update({
+    //   where: { id: newUser.id },
+    //   data: {
+    //     favorites: {
+    //       connect: {
+    //         id: 'a',
+    //       },
+    //     },
+    //   },
+    // });
 
     return {
       accessToken: this.jwtService.sign(payload),

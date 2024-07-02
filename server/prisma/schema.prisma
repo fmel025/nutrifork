@@ -23,8 +23,11 @@ model User {
   avatar         String?
   avatarPublicId String?
   alergies       String[]
-  Rating         Rating[]
+  rating         Rating[]
+  favoriteIDs    String[] @db.ObjectId
+  favorites      Recipe[] @relation(fields: [favoriteIDs], references: [id])
 }
+
 // TODO: Update this one
 model Recipe {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -33,7 +36,9 @@ model Recipe {
   instructions String[]
   ingredients  String[]
   categories   String[]
-  Rating       Rating[]
+  rating       Rating[]
+  userIDs      String[] @db.ObjectId
+  users        User[]   @relation(fields: [userIDs], references: [id])
 }
 
 model Rating {
