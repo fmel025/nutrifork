@@ -26,17 +26,6 @@ export class RecipeRepository {
     return prisma.recipe.findMany();
   }
 
-  async findAllFavoritedByUser(userId: string): Promise<Recipe[]> {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: {
-        favorites: true,
-      },
-    });
-
-    return user.favorites;
-  }
-
   async findByCategories(categories: string[]) {
     if (categories.length === 0) {
       return [];

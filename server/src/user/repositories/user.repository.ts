@@ -2,6 +2,7 @@ import { prisma } from '@Common/database';
 import { UpdateUserType } from '@User/types';
 import { CreateUserDto } from '@Auth/dto';
 import { UpdateUserDto } from '@User/dto';
+import { Recipe } from '@prisma/client';
 
 class UserRepository {
   async create(user: CreateUserDto) {
@@ -44,6 +45,33 @@ class UserRepository {
     });
 
     return user;
+  }
+
+  async findAllFavoritedByUser(userId: string): Promise<Recipe[]> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        favorites: true,
+      },
+    });
+
+    return user.favorites;
+  }
+
+  async setUserFavoriteRecipe(recipeId: string) {
+    const user = await prisma.user.update({
+      where: { id: recipeId },
+      data: {
+        favorites: {
+          connect: { id: recipeId },
+        },
+      },
+      include: {
+        favorites: true,
+      },
+    });
+
+    return user.favorites;
   }
 }
 
