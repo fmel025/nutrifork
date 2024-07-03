@@ -5,5 +5,6 @@ import { RecipeController } from './controllers';
 @Module({
   controllers: [RecipeController],
   providers: [RecipeService],
+  exports: [RecipeService],
 })
 export class RecipeModule {}
