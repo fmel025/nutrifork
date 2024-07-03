@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
@@ -11,7 +12,8 @@ import { UploadImageService } from '@UploadImage/services';
 import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
 import { successResponse } from '@Common/utils/success-response';
-import { User } from '@prisma/client';
+import { Recipe, User } from '@prisma/client';
+import { RecipeService } from 'src/recipe/services';
 // import { prisma } from '@Common/database';
 
 @Injectable()
@@ -19,6 +21,7 @@ export class UserService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly uploadImageService: UploadImageService,
+    private readonly recipeService: RecipeService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -148,5 +151,37 @@ export class UserService {
         `The username ${username} is already registered`,
       );
     }
+  }
+
+  async findAllFavoriteRecipes(userId: string): Promise<Recipe[]> {
+    const recipes = userRepository.findAllFavoritedByUser(userId);
+    return recipes;
+  }
+
+  async setFavoriteRecipe(recipeId: string, user: UserPayload) {
+    const loggedUserResponse = this.findOneById(user.id);
+    const recipeResponse = this.recipeService.findOne(recipeId);
+
+    const [loggedUser, recipe] = await Promise.all([
+      loggedUserResponse,
+      recipeResponse,
+    ]);
+
+    if (!loggedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!recipe) {
+      throw new NotFoundException('Recipe not found');
+    }
+
+    // TODO: If recipe is favorite, then remove it from favorites.
+
+    const favorites = await userRepository.setUserFavoriteRecipe(
+      loggedUser.id,
+      recipe.id,
+    );
+
+    return successResponse(favorites, 'Recipe added to favorites');
   }
 }

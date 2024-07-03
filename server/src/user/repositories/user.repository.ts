@@ -58,9 +58,9 @@ class UserRepository {
     return user.favorites;
   }
 
-  async setUserFavoriteRecipe(recipeId: string) {
+  async setUserFavoriteRecipe(userId: string, recipeId: string) {
     const user = await prisma.user.update({
-      where: { id: recipeId },
+      where: { id: userId },
       data: {
         favorites: {
           connect: { id: recipeId },
