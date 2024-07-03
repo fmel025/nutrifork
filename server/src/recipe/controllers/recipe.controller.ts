@@ -18,11 +18,7 @@ export class RecipeController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.recipeService.findOne(+id);
+    return this.recipeService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecipeDto: any) {
-    return this.recipeService.update(+id, updateRecipeDto);
-  }
 }

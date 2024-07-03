@@ -1,26 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRecipeDto } from '../dto/create-recipe.dto';
-import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { CreateRecipeDto } from '../dto';
+import { recipeRepository } from '../repositories';
 
 @Injectable()
 export class RecipeService {
-  create(createRecipeDto: CreateRecipeDto) {
-    return 'This action adds a new recipe';
+  async create(createRecipeDto: CreateRecipeDto) {
+    return await recipeRepository.createRecipe(createRecipeDto);
   }
 
-  findAll() {
-    return `This action returns all recipe`;
+  async findAll() {
+    return await recipeRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recipe`;
-  }
-
-  update(id: number, updateRecipeDto: UpdateRecipeDto) {
-    return `This action updates a #${id} recipe`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} recipe`;
+  async findOne(id: string) {
+    const recipe = await recipeRepository.findById(id);
+    return recipe;
   }
 }
