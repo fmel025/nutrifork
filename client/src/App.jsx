@@ -4,6 +4,8 @@ import Settings from './pages/settings/Settings'
 import Error404 from './pages/error404/Error404'
 import ProtectedRoute from './components/utils/ProtectedRoute'
 import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
+import Preferences from './pages/prefences/Preferences'
+
 import { useEffect, useState } from 'react'
 import {
   Route,
@@ -38,6 +40,7 @@ function App() {
             <Route path='/ajustes' element={<Settings />} />
           </Route>
           <Route path='*' element={<Error404 />} />
+          <Route path='/preferencias' element={<Preferences />} />
         </Routes>
       </Router>
     </AuthProvider>
