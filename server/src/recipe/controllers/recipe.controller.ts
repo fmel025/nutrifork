@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { RecipeService } from '../services';
 import { CreateRecipeDto } from '../dto';
 
@@ -20,5 +20,4 @@ export class RecipeController {
   findOne(@Param('id') id: string) {
     return this.recipeService.findOne(id);
   }
-
 }

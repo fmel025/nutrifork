@@ -4,6 +4,7 @@ import { UserModule } from '@User/user.module';
 import { ConfigModule } from '@Config/config.module';
 import { UploadImageModule } from '@UploadImage/upload-image.module';
 import { RecipeModule } from './recipe/recipe.module';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RecipeModule } from './recipe/recipe.module';
     ConfigModule,
     UploadImageModule,
     RecipeModule,
+    RatingModule,
   ],
   controllers: [],
   providers: [],
