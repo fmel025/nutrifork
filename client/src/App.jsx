@@ -1,5 +1,6 @@
 import Home from './pages/home/Home'
 import Login from './pages/login/Login'
+import Register from './pages/register/Register'
 import Settings from './pages/settings/Settings'
 import Error404 from './pages/error404/Error404'
 import ProtectedRoute from './components/utils/ProtectedRoute'
@@ -32,6 +33,7 @@ function App() {
         <Routes>
           <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
             <Route path='/iniciar-sesion' element={<Login />} />
+            <Route path='/registrarse' element={<Register />} />
           </Route>
           <Route path='/' element={<Home loggedIn={loggedIn} />} />
           <Route element={<ProtectedRoute canActivate={loggedIn} />}>
