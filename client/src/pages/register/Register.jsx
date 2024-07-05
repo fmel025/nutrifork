@@ -1,27 +1,31 @@
 import { useState } from "react";
-import { login } from "../../services/authServices";
+import { register } from "../../services/authServices";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    
+    const [fullName, setFullName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [validPassword, setValidPassword] = useState(true);
+    
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
+        if (password.length < 8) {
+            setValidPassword(false);
+            return;
+        }
 
         try {
-            const token = await login(email, password);
-
-            if (token) {
-                localStorage.setItem('token', token);
-                navigate('/');
-                window.location.reload();
-            } else {
-                console.log('Login failed. Invalid credentials.');
-            }
+            const message = await register(fullName, username, email, password);
+            console.log(message);
+            navigate('/iniciar-sesion');
+            window.location.reload();
         } catch (error) {
-            console.error('An error occurred during login:', error);
+            console.error("Registration failed: ", error);
         }
     };
 
@@ -32,18 +36,18 @@ export default function Login() {
                     <h1 className="text-2xl md:text-4xl text-secondary font-medium">Crear una cuenta</h1>
                     <p className="py-3 text-sm md:text-base text-black font-medium">¡Bienvenido/a a NutriFork! Por favor, ingresa tus datos.</p>
 
-                    <form className="w-full" onSubmit={handleLogin}>
+                    <form className="w-full" onSubmit={handleRegister}>
                         <p className="py-3 text-sm md:text-base text-black font-normal">Nombre completo</p>
-                        <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
                         <p className="py-3 text-sm md:text-base text-black font-normal">Usuario</p>
-                        <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={username} onChange={(e) => setUsername(e.target.value)} required />
                         <p className="py-3 text-sm md:text-base text-black font-normal">Correo electrónico</p>
                         <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         <p className="py-3 text-sm md:text-base text-black font-normal">Contraseña</p>
                         <input type="password" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <p className="py-1 text-xs text-black font-normal">Debe tener mínimo 8 caracteres. </p>
+                        {!validPassword && <p className="py-1 text-xs text-red-500 font-normal">Debe tener mínimo 8 caracteres.</p>}
                     
-                        <button type="submit" className="btn btn-sm mt-10 text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full md:w-96 lg:w-64" onClick={handleLogin}>Inicia sesión</button>
+                        <button type="submit" className="btn btn-sm mt-10 text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full md:w-96 lg:w-64" onClick={handleRegister}>Regístrate</button>
                         <p className="py-1 text-xs text-black font-normal">¿Ya tienes una cuenta? <a href="/iniciar-sesion" className="text-secondary font-semibold">Inicia sesión</a></p>
                     </form>
 
