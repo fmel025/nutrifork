@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRatingDto } from '../dto/create-rating.dto';
-import { UpdateRatingDto } from '../dto/update-rating.dto';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { UpsertRatingDto } from '../dto/create-rating.dto';
+import { recipeRepository } from 'src/recipe/repositories';
+import { ratingRepository } from '../repositories';
+import { successResponse } from '@Common/utils/success-response';
 @Injectable()
 export class RatingService {
-  create(createRatingDto: CreateRatingDto) {
-    return 'This action adds a new rating';
-  }
+  // Use this service method to create or update a rating
+  async upsert(upsertRatingDto: UpsertRatingDto, userId: string) {
+    const { rating, recipeId } = upsertRatingDto;
 
-  findAll() {
-    return `This action returns all rating`;
-  }
+    const recipe = await recipeRepository.findById(recipeId);
 
-  findOne(id: number) {
-    return `This action returns a #${id} rating`;
-  }
+    if (!recipe) {
+      throw new NotFoundException('The recipe ' + recipeId + ' does not exist');
+    }
 
-  update(id: number, updateRatingDto: UpdateRatingDto) {
-    return `This action updates a #${id} rating`;
-  }
+    const existingRating = await ratingRepository.findByRecipeAndUserIds({
+      recipeId,
+      userId,
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} rating`;
+    const ratingPromise = existingRating
+      ? ratingRepository.updateRating(existingRating.id, rating)
+      : ratingRepository.createRating(rating, userId, recipeId);
+
+    // TODO: Add connection here to the another API.
+    const updatedRating = await ratingPromise;
+
+    return successResponse(
+      updatedRating,
+      `Rating ${existingRating ? 'updated' : 'created'} successfully`,
+      200,
+    );
   }
 }

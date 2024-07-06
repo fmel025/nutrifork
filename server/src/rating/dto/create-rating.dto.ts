@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
 
-export class CreateRatingDto {
+export class UpsertRatingDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
