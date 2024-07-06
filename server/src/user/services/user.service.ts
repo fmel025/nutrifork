@@ -179,7 +179,7 @@ export class UserService {
 
     const favorites = await userRepository.setUserFavoriteRecipe(
       loggedUser.id,
-      recipe.id,
+      recipe.data.id,
     );
 
     return successResponse(favorites, 'Recipe added to favorites');
