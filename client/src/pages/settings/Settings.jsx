@@ -27,7 +27,7 @@ export default function Settings() {
         <div className="flex flex-col justify-between font-Poppins h-fit w-full lg:min-h-screen bg-white">
             <Navbar />
 
-            <section className="flex flex-col md:flex-row h-full p-10 gap-12">
+            <div className="flex flex-col md:flex-row h-full p-10 gap-12">
                 <div className="flex flex-col border-2 border-dark-green rounded-md gap-1 bg-accent-green md:w-[240px] lg:w-[280px] h-fit p-4 shadow-[0_4px_10px_2px_rgb(0,0,0,0.25)]">
                     <a href="#informacion" className="flex justify-start btn btn-sm text-xs md:text-sm lg:text-base font-normal text-white border-0 shadow-none hover:bg-hover-green h-10 w-full">Información personal</a>
                     <a href="#detalles" className="flex justify-start btn btn-sm text-xs md:text-sm lg:text-base font-normal text-white border-0 shadow-none hover:bg-hover-green h-10 w-full">Detalles de la cuenta</a>
@@ -40,7 +40,7 @@ export default function Settings() {
                     <div className="flex flex-col items-center w-full md:hidden">
                         <div className="avatar flex flex-col items-center justify-center w-1/2">
                             <div className="w-full rounded-full">
-                                <img src="/src/assets/avatars/avatar-8.webp" />
+                                <img src="/src/assets/avatar.webp" />
                             </div>
                         </div>
 
@@ -74,13 +74,13 @@ export default function Settings() {
                 <div className="w-[240px] hidden md:block">
                     <div className="avatar">
                         <div className="w-full rounded-full">
-                            <img src="/src/assets/avatars/avatar-8.webp" />
+                            <img src="/src/assets/avatar.webp" />
                         </div>
                     </div>
 
                     <input className="w-4/6 md:w-full mt-4 text-base text-black border rounded-lg cursor-pointer bg-dark-green dark:text-white dark:bg-dark-green" type="file" />
                 </div>
-            </section>
+            </div>
 
             <Footer />
         </div>

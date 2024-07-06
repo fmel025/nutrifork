@@ -33,7 +33,7 @@ export default function Login() {
                     <p className="py-3 text-sm md:text-base text-black font-medium">Por favor, ingresa tus datos.</p>
 
                     <form className="w-full" onSubmit={handleLogin}>
-                        <p className="py-3 text-sm md:text-base text-black font-normal">Usuario o correo electrónico</p>
+                        <p className="py-3 text-sm md:text-base text-black font-normal">Correo electrónico</p>
                         <input type="text" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         <p className="py-3 text-sm md:text-base text-black font-normal">Contraseña</p>
                         <input type="password" className="input h-10 rounded-md input-bordered focus:border-2 focus:outline-0 w-full" value={password} onChange={(e) => setPassword(e.target.value)} required />
