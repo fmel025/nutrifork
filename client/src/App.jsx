@@ -2,6 +2,7 @@ import Home from './pages/home/Home'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/Settings'
+import Profile from './pages/profile/Profile'
 import Error404 from './pages/error404/Error404'
 import ProtectedRoute from './components/utils/ProtectedRoute'
 import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
@@ -38,6 +39,7 @@ function App() {
           <Route path='/' element={<Home loggedIn={loggedIn} />} />
           <Route element={<ProtectedRoute canActivate={loggedIn} />}>
             <Route path='/ajustes' element={<Settings />} />
+            <Route path='/perfil' element={<Profile />} />
           </Route>
           <Route path='*' element={<Error404 />} />
         </Routes>
