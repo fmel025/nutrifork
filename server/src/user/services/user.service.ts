@@ -12,9 +12,11 @@ import { UploadImageService } from '@UploadImage/services';
 import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
 import { successResponse } from '@Common/utils/success-response';
-import { Recipe, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { RecipeService } from 'src/recipe/services';
+import { plainToInstance } from 'class-transformer';
 // import { prisma } from '@Common/database';
+import { RecipeResponseDoc } from '../../recipe/doc/recipe-response.doc';
 
 @Injectable()
 export class UserService {
@@ -153,9 +155,14 @@ export class UserService {
     }
   }
 
-  async findAllFavoriteRecipes(userId: string): Promise<Recipe[]> {
-    const recipes = userRepository.findAllFavoritedByUser(userId);
-    return recipes;
+  async findAllFavoriteRecipes(userId: string) {
+    const recipes = await userRepository.findAllFavoritedByUser(userId);
+    const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes);
+    return successResponse(
+      parsedRecipes,
+      'Favorite recipes retrieved successfully',
+      200,
+    );
   }
 
   async setFavoriteRecipe(recipeId: string, user: UserPayload) {
@@ -182,6 +189,9 @@ export class UserService {
       recipe.data.id,
     );
 
-    return successResponse(favorites, 'Recipe added to favorites');
+    const favoritesResponse = plainToInstance(RecipeResponseDoc, favorites, {
+      excludeExtraneousValues: true,
+    });
+    return successResponse(favoritesResponse, 'Recipe added to favorites');
   }
 }

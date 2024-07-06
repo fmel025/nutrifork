@@ -27,8 +27,14 @@ export class RecipeResponseDoc {
   favoriteByUser: boolean;
 
   @Expose()
-  @Transform(({ obj }: { obj: Recipe & { rating?: Rating } }) => {
-    return obj.rating ? obj.rating.rating : 0;
-  })
+  @Transform(
+    ({ obj }: { obj: Recipe & { rating?: Rating[]; userId?: string } }) => {
+      const userRating = obj?.rating?.find(
+        (rating) => rating.userId === obj.userId,
+      );
+
+      return userRating ? userRating.rating : 0;
+    },
+  )
   ratingByUser: number;
 }
