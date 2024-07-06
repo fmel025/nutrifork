@@ -7,6 +7,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   UploadedFile,
   UseGuards,
@@ -47,6 +48,27 @@ export class UserController {
     @Body() data: UpdateUserDto,
   ) {
     return await this.userService.update(loggedUser, data);
+  }
+
+  @ApiOperation({
+    summary: 'Set a recipe as favorite',
+    description: 'Use it to set a recipe as favorite',
+  })
+  @Patch('favorite/:recipeId')
+  async setFavoriteRecipe(
+    @Param('recipeId') recipeId: string,
+    @User() user: UserPayload,
+  ) {
+    return await this.userService.setFavoriteRecipe(recipeId, user);
+  }
+
+  @ApiOperation({
+    summary: 'Set a recipe as favorite',
+    description: 'Use it to set a recipe as favorite',
+  })
+  @Get('favorite')
+  async getFavoriteRecipes(@User() user: UserPayload) {
+    return await this.userService.findAllFavoriteRecipes(user.id);
   }
 
   @UseInterceptors(FileInterceptor('avatar'))
