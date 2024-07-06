@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { login } from "../../services/authServices";
+import PrefDropdown from '../../components/prefDropdown/PrefDropdown';
 import { useNavigate } from "react-router-dom";
 
 export default function Preferences() {
+    const foodOptions = ['Mexicana', 'Ensaladas', 'Italiana'];
+    const restrictionOptions = ['Gluten', 'Lácteos', 'Mariscos'];
 
     return (
         <div className="flex justify-center items-center font-Poppins bg-accent-green bg-green bg-cover h-screen">
@@ -13,11 +16,11 @@ export default function Preferences() {
                     <form className="w-full">
                         <p className="py-3 text-sm md:text-base text-black font-normal">¿Qué tipo de comida te gusta?</p>
                         <div className="grid md:grid-flow-row md:gap-0 lg:grid-cols-1 lg:gap-8">
-                           
+                        <PrefDropdown label="Comidas favoritas" options={foodOptions} placeholder="3 opciones seleccionadas" />  
                         </div>
                         <p className="py-3 text-sm md:text-base text-black font-normal">¿Qué alimentos no puedes comer?</p>
                         <div className="grid md:grid-flow-row md:gap-0 lg:grid-cols-1 lg:gap-8">
-                            
+                        <PrefDropdown label="Alergias" options={restrictionOptions} placeholder="2 opciones seleccionadas" />   
                         </div>
                         <button className="btn btn-sm mt-10 text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full md:w-96 lg:w-64" >Comencemos ahora</button>
                     </form>

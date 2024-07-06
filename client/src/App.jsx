@@ -6,6 +6,7 @@ import ProtectedRoute from './components/utils/ProtectedRoute'
 import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
 import Preferences from './pages/prefences/Preferences'
 import Recipes from './pages/recipes/Recipes'
+import Principal from './pages/homepage/Homepage'
 
 import { useEffect, useState } from 'react'
 import {
@@ -43,6 +44,7 @@ function App() {
           <Route path='*' element={<Error404 />} />
           <Route path='/preferencias' element={<Preferences />} />
           <Route path='/recetas' element={<Recipes />} />
+          <Route path='/principal' element={<Principal />} />
         </Routes>
       </Router>
     </AuthProvider>
