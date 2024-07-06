@@ -16,6 +16,10 @@ export class CreateRecipeDto {
   @IsArray()
   ingredients: string[];
 
+  @ApiProperty({ type: [String] })
+  @IsArray()
+  instructions: string[];
+
   @ApiProperty()
   @IsArray()
   categories: string[];
