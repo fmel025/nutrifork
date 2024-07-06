@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto';
 import { userRepository } from '../repositories/user.repository';
@@ -12,12 +13,17 @@ import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
 import { successResponse } from '@Common/utils/success-response';
 import { User } from '@prisma/client';
+import { RecipeService } from 'src/recipe/services';
+import { plainToInstance } from 'class-transformer';
+// import { prisma } from '@Common/database';
+import { RecipeResponseDoc } from '../../recipe/doc/recipe-response.doc';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly uploadImageService: UploadImageService,
+    private readonly recipeService: RecipeService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -33,6 +39,17 @@ export class UserService {
     const newUser = await userRepository.create(createUserDto);
 
     const payload = { id: newUser.id, email: newUser.email };
+
+    // prisma.user.update({
+    //   where: { id: newUser.id },
+    //   data: {
+    //     favorites: {
+    //       connect: {
+    //         id: 'a',
+    //       },
+    //     },
+    //   },
+    // });
 
     return {
       accessToken: this.jwtService.sign(payload),
@@ -136,5 +153,45 @@ export class UserService {
         `The username ${username} is already registered`,
       );
     }
+  }
+
+  async findAllFavoriteRecipes(userId: string) {
+    const recipes = await userRepository.findAllFavoritedByUser(userId);
+    const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes);
+    return successResponse(
+      parsedRecipes,
+      'Favorite recipes retrieved successfully',
+      200,
+    );
+  }
+
+  async setFavoriteRecipe(recipeId: string, user: UserPayload) {
+    const loggedUserResponse = this.findOneById(user.id);
+    const recipeResponse = this.recipeService.findOne(recipeId);
+
+    const [loggedUser, recipe] = await Promise.all([
+      loggedUserResponse,
+      recipeResponse,
+    ]);
+
+    if (!loggedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!recipe) {
+      throw new NotFoundException('Recipe not found');
+    }
+
+    // TODO: If recipe is favorite, then remove it from favorites.
+
+    const favorites = await userRepository.setUserFavoriteRecipe(
+      loggedUser.id,
+      recipe.data.id,
+    );
+
+    const favoritesResponse = plainToInstance(RecipeResponseDoc, favorites, {
+      excludeExtraneousValues: true,
+    });
+    return successResponse(favoritesResponse, 'Recipe added to favorites');
   }
 }

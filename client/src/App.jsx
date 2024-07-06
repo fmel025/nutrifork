@@ -1,6 +1,8 @@
 import Home from './pages/home/Home'
 import Login from './pages/login/Login'
+import Register from './pages/register/Register'
 import Settings from './pages/settings/Settings'
+import Profile from './pages/profile/Profile'
 import Error404 from './pages/error404/Error404'
 import ProtectedRoute from './components/utils/ProtectedRoute'
 import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
@@ -34,13 +36,20 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* AuthRedirectRoute allows users to enter these routes only when they're NOT logged in */}
           <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
             <Route path='/iniciar-sesion' element={<Login />} />
+            <Route path='/registrarse' element={<Register />} />
           </Route>
-          <Route path='/' element={<Home loggedIn={loggedIn} />} />
+
+          <Route path='/' element={<Home />} />
+
+          {/* ProtectedRoute allows users to enter only when they're logged in */}
           <Route element={<ProtectedRoute canActivate={loggedIn} />}>
             <Route path='/ajustes' element={<Settings />} />
+            <Route path='/perfil' element={<Profile />} />
           </Route>
+
           <Route path='*' element={<Error404 />} />
           <Route path='/preferencias' element={<Preferences />} />
           <Route path='/recetas' element={<Recipes />} />

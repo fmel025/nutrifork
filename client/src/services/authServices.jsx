@@ -21,3 +21,26 @@ export const login = async (email, password) => {
         throw error;
     }
 }
+
+export const register = async (fullName, username, email, password) => {
+    try {
+        const response = await axios.post(`/auth/register`, {
+            fullName: fullName,
+            username: username,
+            email: email,
+            password: password,
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.status === 201) {
+            return "User registered successfully";
+        }
+
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}

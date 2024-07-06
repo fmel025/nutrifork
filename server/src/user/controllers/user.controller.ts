@@ -7,6 +7,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   UploadedFile,
   UseGuards,
@@ -49,6 +50,27 @@ export class UserController {
     return await this.userService.update(loggedUser, data);
   }
 
+  @ApiOperation({
+    summary: 'Set a recipe as favorite',
+    description: 'Use it to set a recipe as favorite',
+  })
+  @Patch('favorite/:recipeId')
+  async setFavoriteRecipe(
+    @Param('recipeId') recipeId: string,
+    @User() user: UserPayload,
+  ) {
+    return await this.userService.setFavoriteRecipe(recipeId, user);
+  }
+
+  @ApiOperation({
+    summary: 'Get favorite recipes',
+    description: 'Use it to get favorite recipes',
+  })
+  @Get('favorite')
+  async getFavoriteRecipes(@User() user: UserPayload) {
+    return await this.userService.findAllFavoriteRecipes(user.id);
+  }
+
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -62,6 +84,10 @@ export class UserController {
         },
       },
     },
+  })
+  @ApiOperation({
+    summary: 'Set an user avatar',
+    description: 'Use it to set an avatar for an user',
   })
   @Patch('avatar')
   async updateAvatar(
