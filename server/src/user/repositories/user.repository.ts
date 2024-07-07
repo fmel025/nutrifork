@@ -39,9 +39,31 @@ class UserRepository {
   }
 
   async update(id: string, data: UpdateUserType | UpdateUserDto) {
+    let extra = {};
+
+    if (data?.preferences) {
+      extra = {
+        ...extra,
+        preferences: {
+          set: data.preferences,
+        },
+      };
+    }
+
+    if (data?.allergies) {
+      extra = {
+        ...extra,
+        allergies: {
+          set: data.allergies,
+        },
+      };
+    }
     const user = await prisma.user.update({
       where: { id },
-      data: data as UpdateUserType,
+      data: {
+        ...data,
+        ...extra,
+      },
     });
 
     return user;
