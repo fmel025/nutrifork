@@ -19,3 +19,29 @@ export const getUser = async () => {
         return [];
     }
 };
+
+export const updateUser = async ({ fullName, username, email, password }) => {
+    const requestBody = {
+        fullName,
+        username,
+        email,
+        password
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.patch(`/user`, requestBody, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
