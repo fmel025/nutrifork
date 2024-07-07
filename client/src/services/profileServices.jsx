@@ -40,6 +40,54 @@ export const getUserFavorites = async () => {
     }
 };
 
+export const updateUser = async ({ fullName, username, email, password }) => {
+    const requestBody = {
+        fullName,
+        username,
+        email,
+        password
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.patch(`/user`, requestBody, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
+export const updateAvatar = async (file) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.patch(`/user/avatar`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("An error occurred while updating the avatar: ", error);
+        throw error;
+    }
+};
+
 export const updateRecipeFavorite = async (recipeId) => {
     try {
         const token = localStorage.getItem('token');
@@ -61,4 +109,3 @@ export const updateRecipeFavorite = async (recipeId) => {
         throw error;
     }
 };
-
