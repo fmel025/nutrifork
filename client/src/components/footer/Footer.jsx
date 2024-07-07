@@ -12,15 +12,17 @@ export default function Footer() {
             </aside>
             <nav>
                 <h6 className="footer-title">Enlaces útiles</h6>
-                <Link><a className="link link-hover">¿Quiénes somos?</a></Link>
                 <Link to={'/'}><a className="link link-hover">Recetas</a></Link>
                 {loggedIn ? (
                     <>
-                        <Link><a className="link link-hover">Perfil</a></Link>
+                        <Link to={'/perfil'}><a className="link link-hover">Perfil</a></Link>
                         <Link to={'/ajustes'}><a className="link link-hover">Ajustes</a></Link>
                     </>
                 ) : (
-                    <Link to={'/iniciar-sesion'}><a className="link link-hover">Inicia sesión</a></Link>
+                    <>
+                        <Link to={'/nutrifork'}><a className="link link-hover">¿Quiénes somos?</a></Link>
+                        <Link to={'/iniciar-sesion'}><a className="link link-hover">Inicia sesión</a></Link>
+                    </>
                 )}
             </nav>
         </footer>

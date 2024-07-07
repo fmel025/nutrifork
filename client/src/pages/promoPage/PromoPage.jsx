@@ -5,7 +5,7 @@ import RecipeCard from "../../components/recipeCard/RecipeCard";
 import { getAllRecipes } from '../../services/recipeServices';
 import { useEffect, useState } from 'react';
 
-export default function Homepage({ loggedIn }) {
+export default function PromoPage() {
     const [loading, setLoading] = useState(true);
     const [recipes, setRecipes] = useState([]);
 
@@ -30,7 +30,7 @@ export default function Homepage({ loggedIn }) {
 
     return (
         <div className="flex flex-col justify-between font-Poppins min-h-screen w-full bg-white">
-            <Navbar loggedIn={loggedIn} />
+            <Navbar />
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col lg:flex-row-reverse items-center">
                     <img src="/src/assets/food-3.webp" className="w-full max-w-2xl lg:max-w-3xl lg:w-2/4 lg:ml-8" alt="Comida" />
@@ -45,11 +45,11 @@ export default function Homepage({ loggedIn }) {
                     </div>
                 </div>
             </div>
-            <div class="container mx-auto text-center py-8">
-                <h1 class="text-2xl font-bold mb-8">Platillos populares</h1>
-                <div class="flex flex-row justify-center items-center space-x-4">
-                    <div class="flex flex-col items-center">
-                        <img src="/src/assets/potatoes.webp" alt="Papas" class="w-42 h-72 px-20"/>
+            <div className="container mx-auto text-center py-8">
+                <h1 className="text-2xl font-bold mb-8">Platillos populares</h1>
+                <div className="flex flex-row justify-center items-center space-x-4">
+                    <div className="flex flex-col items-center">
+                        <img src="/src/assets/potatoes.webp" alt="Papas" className="w-42 h-72 px-20"/>
                     </div>
                     <div className="flex w-3/5 gap-2 ">
                         {recipes.slice(0, 3).map(recipe => (
@@ -58,8 +58,8 @@ export default function Homepage({ loggedIn }) {
                     </div>
 
                     
-                    <div class="flex flex-col items-center">
-                        <img src="/src/assets/leaf.webp" alt="Hojas" class="w-42 h-72 px-20"/>
+                    <div className="flex flex-col items-center">
+                        <img src="/src/assets/leaf.webp" alt="Hojas" className="w-42 h-72 px-20"/>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@ export default function Homepage({ loggedIn }) {
                     </div>
                 </div>
             </div>
-            <Footer loggedIn={loggedIn} />
+            <Footer />
         </div>
     )
 }
