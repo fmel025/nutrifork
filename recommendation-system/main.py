@@ -21,6 +21,11 @@ def format_data_for_surprise(data):
     trainset = dataset.build_full_trainset()
     return trainset
 
+# Function to format data from prisma to dictionaries.
+def format_db_data(data): 
+    return [{'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating} for item in data]
+
+# This runs when the app is initialized, so we poblify the model
 @asynccontextmanager
 async def main(app: FastAPI):
     await prisma.connect()
@@ -37,33 +42,14 @@ async def main(app: FastAPI):
 
 app = FastAPI(lifespan=main)
 
-@app.post("/rate")
-async def rate(recipe_id: str, user_id: str, rating: float):    
-    data = await prisma.rating.find_many()
-    trainset = format_data_for_surprise(data)
-    model.fit(trainset)
-    
-    return {"message": "Rating added and model updated"}
 
-@app.put("/rate")
-async def update_rating(recipe_id: str, user_id: str, rating: float):
-    await prisma.rating.update(where={"userId_recipeId": {"userId": user_id, "recipeId": recipe_id}}, data={"rating": rating})
-    
-    data = await prisma.rating.find_many()
-    trainset = format_data_for_surprise(data)
-    model.fit(trainset)
-    
-    return {"message": "Rating updated and model updated"}
 
 @app.get("/recommend")
 async def recommend(user_id: str, num_recommendations: int = 5):
     data = await prisma.rating.find_many()
-
-    new_data = []
-    for item in data:
-        new_data.append({'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating})
-
-    df = pd.DataFrame(new_data)
+    formatted_data = format_db_data(data)
+    
+    df = pd.DataFrame(formatted_data)
     all_items = df['recipeId'].unique()
     
     # Check if user exists
