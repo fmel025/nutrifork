@@ -1,8 +1,33 @@
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
+import RecipeCard from "../../components/recipeCard/RecipeCard";
+import { getAllRecipes } from '../../services/recipeServices';
+import { useEffect, useState } from 'react';
 
 export default function Homepage({ loggedIn }) {
+    const [loading, setLoading] = useState(true);
+    const [recipes, setRecipes] = useState([]);
+
+    const getRecipes = async () => {
+        try {
+            const response = await getAllRecipes();
+
+            if (response) {
+                setRecipes(response.data);
+                console.log(response.data);
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de la API:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getRecipes();
+    }, []);
+
     return (
         <div className="flex flex-col justify-between font-Poppins min-h-screen w-full bg-white">
             <Navbar loggedIn={loggedIn} />
@@ -26,18 +51,12 @@ export default function Homepage({ loggedIn }) {
                     <div class="flex flex-col items-center">
                         <img src="/src/assets/potatoes.webp" alt="Papas" class="w-42 h-72 px-20"/>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
-                        <p className="py-6">Chili Mac & Cheese</p>
+                    <div className="flex w-3/5 gap-2 ">
+                        {recipes.slice(0, 3).map(recipe => (
+                            <RecipeCard key={recipe.id} recipe={recipe} />
+                        ))}
                     </div>
-                    <div class="flex flex-col items-center">
-                        <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
-                        <p className="py-6">Chili Mac & Cheese</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
-                        <p className="py-6">Chili Mac & Cheese</p>
-                    </div>
+
                     
                     <div class="flex flex-col items-center">
                         <img src="/src/assets/leaf.webp" alt="Hojas" class="w-42 h-72 px-20"/>

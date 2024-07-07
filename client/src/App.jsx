@@ -52,7 +52,7 @@ function App() {
 
           <Route path='*' element={<Error404 />} />
           <Route path='/preferencias' element={<Preferences />} />
-          <Route path='/recetas' element={<Recipes />} />
+          <Route path='/receta/:id' element={<Recipes />} />
           <Route path='/principal' element={<Principal />} />
         </Routes>
       </Router>
