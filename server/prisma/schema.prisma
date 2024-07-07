@@ -22,7 +22,7 @@ model User {
   active         Boolean  @default(false)
   avatar         String?
   avatarPublicId String?
-  alergies       String[]
+  allergies       String[]
   preferences    String[]
   rating         Rating[]
   favoriteIDs    String[] @db.ObjectId
