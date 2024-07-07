@@ -1,0 +1,14 @@
+name: myenv
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9                  # Specifies the Python version
+  - numpy                       # Numerical computations, required by LightFM
+  - scipy                       # Scientific computing, required by LightFM
+  - lightfm                     # Library for building recommendation systems
+  - boto3                       # AWS SDK for Python, used for interacting with S3 (if needed)
+  - pip                         # Package installer for Python
+  - pip:
+      - fastapi                 # Web framework for building APIs
+      - prisma                  # ORM for database interactions
+      - uvicorn                 # Web framework for building APIs
