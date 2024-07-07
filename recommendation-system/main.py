@@ -1,53 +1,25 @@
 from fastapi import FastAPI
 from fastapi import Body
 from prisma import Prisma
-from lightfm import LightFM
-from lightfm.data import Dataset
-from lightfm.evaluation import precision_at_k
-from scipy.sparse import coo_matrix
+from surprise import Dataset, Reader, SVD
+from surprise.model_selection import train_test_split
+from surprise import accuracy
 from contextlib import asynccontextmanager
-import numpy as np
-
-
+import pandas as pd
 
 prisma = Prisma()
-model = LightFM(loss='warp')
-user_id_mapping = {}
-recipe_id_mapping = {}
-reverse_user_id_mapping = {}
-reverse_recipe_id_mapping = {}
-interactions_global = None
+model = SVD()
 
-# Function to format data for LightFM
-def format_data_for_lightfm(data):
-    global user_id_mapping, recipe_id_mapping, reverse_user_id_mapping, reverse_recipe_id_mapping
-
-    user_ids = []
-    recipe_ids = []
-    ratings = []
-
-    for entry in data:
-        user_ids.append(dict(entry)['userId'])
-        recipe_ids.append(dict(entry)['recipeId'])
-        ratings.append(dict(entry)['rating'])
-
-    user_id_mapping = {user_id: index for index, user_id in enumerate(set(user_ids))}
-    recipe_id_mapping = {recipe_id: index for index, recipe_id in enumerate(set(recipe_ids))}
-    
-    reverse_user_id_mapping = {index: user_id for user_id, index in user_id_mapping.items()}
-    reverse_recipe_id_mapping = {index: recipe_id for recipe_id, index in recipe_id_mapping.items()}
-
-    user_indices = [user_id_mapping[user_id] for user_id in user_ids]
-    recipe_indices = [recipe_id_mapping[recipe_id] for recipe_id in recipe_ids]
-
-    interactions = coo_matrix((ratings, (user_indices, recipe_indices)), 
-                              shape=(len(user_id_mapping), len(recipe_id_mapping)))
-
-    global interactions_global
-    interactions_global = interactions
-    weights = None
-
-    return interactions, weights, user_id_mapping, recipe_id_mapping
+# Function to format data for Surprise
+def format_data_for_surprise(data):
+    new_data = []
+    for item in data:
+        new_data.append({'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating})
+    df = pd.DataFrame(new_data)
+    reader = Reader(rating_scale=(1, 5))
+    dataset = Dataset.load_from_df(df[['userId', 'recipeId', 'rating']], reader)
+    trainset = dataset.build_full_trainset()
+    return trainset
 
 @asynccontextmanager
 async def main(app: FastAPI):
@@ -55,22 +27,21 @@ async def main(app: FastAPI):
     
     data = await prisma.rating.find_many()
     
-    interactions, weights, _, _ = format_data_for_lightfm(data)
-    model.fit(interactions, sample_weight=weights, epochs=30)
+    trainset = format_data_for_surprise(data)
+    model.fit(trainset)
     print(':: Info model trained successfully')
 
     yield
+
     await prisma.disconnect()
 
 app = FastAPI(lifespan=main)
 
 @app.post("/rate")
-async def rate(recipe_id: str, user_id: str, rating: float):
-    await prisma.rating.create(data={"userId": user_id, "recipeId": recipe_id, "rating": rating})
-    
-    new_data = [{"userId": user_id, "recipeId": recipe_id, "rating": rating}]
-    interactions, weights, _, _ = format_data_for_lightfm(new_data)
-    model.fit_partial(interactions, sample_weight=weights, epochs=1)
+async def rate(recipe_id: str, user_id: str, rating: float):    
+    data = await prisma.rating.find_many()
+    trainset = format_data_for_surprise(data)
+    model.fit(trainset)
     
     return {"message": "Rating added and model updated"}
 
@@ -78,31 +49,35 @@ async def rate(recipe_id: str, user_id: str, rating: float):
 async def update_rating(recipe_id: str, user_id: str, rating: float):
     await prisma.rating.update(where={"userId_recipeId": {"userId": user_id, "recipeId": recipe_id}}, data={"rating": rating})
     
-    updated_data = [{"userId": user_id, "recipeId": recipe_id, "rating": rating}]
-    interactions, weights, _, _ = format_data_for_lightfm(updated_data)
-    model.fit_partial(interactions, sample_weight=weights, epochs=1)
+    data = await prisma.rating.find_many()
+    trainset = format_data_for_surprise(data)
+    model.fit(trainset)
     
     return {"message": "Rating updated and model updated"}
 
 @app.get("/recommend")
 async def recommend(user_id: str, num_recommendations: int = 5):
-    user_index = user_id_mapping.get(user_id)
-    if user_index is None:
+    data = await prisma.rating.find_many()
+
+    new_data = []
+    for item in data:
+        new_data.append({'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating})
+
+    df = pd.DataFrame(new_data)
+    all_items = df['recipeId'].unique()
+    
+    # Check if user exists
+    user_data = df[df['userId'] == user_id]
+    if user_data.empty:
         return {"message": "User not found"}
-
+    
     # Generate recommendations
-    n_users, n_items = model.user_embeddings.shape[0], model.item_embeddings.shape[0]
-    scores = model.predict(user_index, np.arange(n_items))
-
-    global interactions_global
-    # Get the list of items the user has already rated
-    user_rated_items = interactions_global.tocsr()[user_index].indices
-
-    # Exclude already rated items
-    scores[user_rated_items] = -np.inf
-
-    top_items = np.argsort(-scores)[:num_recommendations]
-    recommendations = [reverse_recipe_id_mapping[item] for item in top_items]
+    user_rated_items = user_data['recipeId'].values
+    items_to_predict = [item for item in all_items if item not in user_rated_items]
+    
+    predictions = [model.predict(user_id, item) for item in items_to_predict]
+    predictions.sort(key=lambda x: x.est, reverse=True)
+    
+    recommendations = [pred.iid for pred in predictions[:num_recommendations]]
     
     return {"recommendations": recommendations}
-
