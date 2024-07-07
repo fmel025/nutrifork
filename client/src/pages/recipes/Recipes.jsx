@@ -9,8 +9,8 @@ export default function Recipes({ loggedIn }) {
             <Navbar loggedIn={loggedIn} />
             <div className="flex flex-col lg:flex-row p-4 lg:p-8">
                 <div className="lg:w-[25%] p-4">
-                    <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" className="w-full lg:w-80 hidden lg:block" />
-                    <div className="bg-accent-green text-white p-4 rounded-md mt-2">
+                    <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" className="w-full lg:w-80 lg:block rounded-lg bg-accent-green shadow-[0_4px_10px_2px_rgb(0,0,0,0.25)]" />
+                    <div className="bg-accent-green text-white p-4 rounded-md mt-2 lg:w-80">
                             <h3 className="text-xl font-bold mb-4">Ingredientes</h3>
                                 <ul className="list-disc pl-6">
                                     <li className="mb-2">400 g de Carne picada de ternera</li>
