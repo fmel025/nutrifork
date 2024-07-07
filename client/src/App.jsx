@@ -8,15 +8,14 @@ import ProtectedRoute from './components/utils/ProtectedRoute'
 import AuthRedirectRoute from './components/utils/AuthRedirectRoute'
 import Preferences from './pages/prefences/Preferences'
 import Recipes from './pages/recipes/Recipes'
-import Principal from './pages/homepage/Homepage'
-
+import PromoPage from './pages/promoPage/PromoPage'
 import { useEffect, useState } from 'react'
+import { AuthProvider } from './components/utils/AuthContext'
 import {
   Route,
   BrowserRouter as Router,
   Routes
 } from 'react-router-dom'
-import { AuthProvider } from './components/utils/AuthContext'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -40,9 +39,8 @@ function App() {
           <Route element={<AuthRedirectRoute isAuthenticated={loggedIn} />}>
             <Route path='/iniciar-sesion' element={<Login />} />
             <Route path='/registrarse' element={<Register />} />
+            <Route path='/nutrifork' element={<PromoPage />} />
           </Route>
-
-          <Route path='/' element={<Home />} />
 
           {/* ProtectedRoute allows users to enter only when they're logged in */}
           <Route element={<ProtectedRoute canActivate={loggedIn} />}>
@@ -50,10 +48,10 @@ function App() {
             <Route path='/perfil' element={<Profile />} />
           </Route>
 
-          <Route path='*' element={<Error404 />} />
+          <Route path='/' element={<Home />} />
           <Route path='/preferencias' element={<Preferences />} />
           <Route path='/receta/:id' element={<Recipes />} />
-          <Route path='/principal' element={<Principal />} />
+          <Route path='*' element={<Error404 />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -2,8 +2,7 @@ import { useContext } from "react";
 import AuthContext from "../utils/AuthContext";
 import { Link } from "react-router-dom";
 import { updateRecipeFavorite } from '../../services/profileServices';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function RecipeCard({recipe}) {
     const { loggedIn } = useContext(AuthContext);
