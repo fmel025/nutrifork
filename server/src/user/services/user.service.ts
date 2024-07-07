@@ -63,11 +63,13 @@ export class UserService {
       data.password = hashedPassword;
     }
 
-    if (email) {
+    const user = await userRepository.findOneById(loggedUser.id);
+
+    if (email && user.email !== email) {
       await this.validateEmail(email);
     }
 
-    if (username) {
+    if (username && user.username !== username) {
       await this.validateUsername(username);
     }
 
