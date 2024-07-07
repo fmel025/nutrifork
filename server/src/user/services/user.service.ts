@@ -182,16 +182,16 @@ export class UserService {
       throw new NotFoundException('Recipe not found');
     }
 
-    // TODO: If recipe is favorite, then remove it from favorites.
+    const isRecipeFavorite: boolean = loggedUser.favoriteIDs.includes(recipeId);
 
-    const favorites = await userRepository.setUserFavoriteRecipe(
-      loggedUser.id,
-      recipe.data.id,
+    if (!isRecipeFavorite)
+      await userRepository.setUserFavoriteRecipe(loggedUser.id, recipe.data.id);
+    else
+      await userRepository.unSetFavoriteRecipe(loggedUser.id, recipe.data.id);
+
+    return successResponse(
+      { isFavorite: !isRecipeFavorite },
+      `Recipe ${!isRecipeFavorite ? 'added to' : 'removed from'} favorites`,
     );
-
-    const favoritesResponse = plainToInstance(RecipeResponseDoc, favorites, {
-      excludeExtraneousValues: true,
-    });
-    return successResponse(favoritesResponse, 'Recipe added to favorites');
   }
 }
