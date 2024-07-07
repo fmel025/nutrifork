@@ -20,6 +20,26 @@ export const getUser = async () => {
     }
 };
 
+export const getUserFavorites = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/user/favorite`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+        return [];
+    }
+};
+
 export const updateUser = async ({ fullName, username, email, password }) => {
     const requestBody = {
         fullName,
