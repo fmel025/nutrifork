@@ -1,12 +1,17 @@
+// src/pages/settings/Settings.jsx
+
 import Navbar from '../../components/navbar/Navbar';
 import Footer from '../../components/footer/Footer';
 import PrefDropdown from '../../components/prefDropdown/PrefDropdown';
 import { useEffect, useState } from 'react';
 import { getUser, updateUser } from '../../services/profileServices';
+import Avatar from '../../components/avatar/Avatar';
+import ChangeAvatarBtn from '../../components/changeAvatarBtn/ChangeAvatarBtn';
 
 export default function Settings() {
     const foodOptions = ['Mexicana', 'Ensaladas', 'Italiana'];
     const restrictionOptions = ['Gluten', 'Lácteos', 'Mariscos'];
+    const [avatarUrl, setAvatarUrl] = useState('/src/assets/avatar.webp');
     const [userData, setUserData] = useState({
         fullName: '',
         username: '',
@@ -19,8 +24,11 @@ export default function Settings() {
             const response = await getUser();
 
             if (response) {
-                console.log("User fetched:", response.data);
                 setUserData(response.data);
+
+                if (response.data.avatarUrl) {
+                    setAvatarUrl(response.data.avatarUrl);
+                }
             }
         } catch (error) {
             console.error('Error al obtener datos de la API:', error);
@@ -41,7 +49,6 @@ export default function Settings() {
         try {
             const { fullName, username, email, password } = userData;
             await updateUser({ fullName, username, email, password });
-            console.log('Datos actualizados.');
         } catch (error) {
             console.error('Error al actualizar datos: ', error);
         }
@@ -66,13 +73,9 @@ export default function Settings() {
 
                     <h2 id="informacion" className="text-xl md:text-2xl lg:text-3xl text-black font-medium py-6">Información personal</h2>
                     <div className="flex flex-col items-center w-full md:hidden">
-                        <div className="avatar flex flex-col items-center justify-center w-1/2">
-                            <div className="w-full rounded-full">
-                                <img src="/src/assets/avatar.webp" />
-                            </div>
-                        </div>
+                        <Avatar avatarUrl={avatarUrl} width="w-1/2" />
 
-                        <input className="w-4/6 md:w-full mt-4 text-base text-black border rounded-lg cursor-pointer bg-dark-green dark:text-white dark:bg-dark-green" type="file" />
+                        <ChangeAvatarBtn />
                     </div>
 
                     <form onSubmit={handleSubmit} className="w-full text-sm md:text-base">
@@ -100,13 +103,8 @@ export default function Settings() {
                 </div>
 
                 <div className="w-[240px] hidden md:block">
-                    <div className="avatar">
-                        <div className="w-full rounded-full">
-                            <img src="/src/assets/avatar.webp" />
-                        </div>
-                    </div>
-
-                    <input className="w-4/6 md:w-full mt-4 text-base text-black border rounded-lg cursor-pointer bg-dark-green dark:text-white dark:bg-dark-green" type="file" />
+                    <Avatar avatarUrl={avatarUrl} width="w-fit" />
+                    <ChangeAvatarBtn />
                 </div>
             </div>
 

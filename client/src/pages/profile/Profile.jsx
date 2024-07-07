@@ -15,7 +15,6 @@ function Profile() {
             const response = await getUser();
 
             if (response) {
-                console.log("User fetched:", response.data);
                 setUser(response.data);
             }
         } catch (error) {
@@ -53,7 +52,7 @@ function Profile() {
                             </span>
                             <span className='flex flex-row gap-3'>
                                 <p>Alergias y restricciones:</p>
-                                {loading ? '...' : user.alergies.map(allergy => <Tag key={allergy} valor={allergy} />)}
+                                {loading ? '...' : user.allergies.map(allergy => <Tag key={allergy} valor={allergy} />)}
                             </span>
                         </div>
                     </div>

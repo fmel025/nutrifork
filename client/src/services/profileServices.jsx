@@ -45,3 +45,25 @@ export const updateUser = async ({ fullName, username, email, password }) => {
         throw error;
     }
 }
+
+export const updateAvatar = async (file) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.patch(`/user/avatar`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error("An error occurred while updating the avatar: ", error);
+        throw error;
+    }
+};
