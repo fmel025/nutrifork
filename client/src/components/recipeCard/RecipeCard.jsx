@@ -30,7 +30,7 @@ export default function RecipeCard({recipe}) {
             </figure>
 
             <div className="card-body flex flex-row justify-between items-center">
-                <Link to={''}><h2 className="text-base">{recipe.name}</h2></Link>
+                <Link to={`/receta/${recipe.id}`}><h2 className="text-base hover:text-accent-green hover:font-semibold hover:underline">{recipe.name}</h2></Link>
                 {loggedIn && (
                     <button onClick={handleFavoriteToggle}>
                         <svg width="30px" height="30px" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
