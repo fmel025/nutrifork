@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Patch } from '@nestjs/common';
+import { Controller, Body, UseGuards, Patch } from '@nestjs/common';
 import { RatingService } from '../services';
 import { UpsertRatingDto } from '../dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
