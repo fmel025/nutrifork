@@ -17,7 +17,6 @@ function Profile() {
             const response = await getUser();
 
             if (response) {
-                console.log("User fetched:", response.data);
                 setUser(response.data);
             }
         } catch (error) {
@@ -33,7 +32,6 @@ function Profile() {
 
             if (response) {
                 setRecipes(response.data);
-                console.log(response.data);
             }
         } catch (error) {
             console.error('Error al obtener datos de la API:', error);
@@ -61,7 +59,7 @@ function Profile() {
                         <span className='flex flex-col lg:flex-row items-center w-full justify-between gap-2 lg:gap-0 border-b-2 border-opacity-20 border-black pb-5'>
                             <h1 className='text-3xl'>¡Hola, {loading ? '...' : user.fullName}!</h1>
                             <button onClick={handleEditClick} className="btn btn-sm flex justify-between text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-8 px-8  md:w-96 lg:w-64">Editar informacion
-                            <svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg>
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></polygon> </g> </g> </g> </g></svg>
                             </button>
                         </span>
                         
@@ -70,6 +68,7 @@ function Profile() {
                             <p>Correo electrónico: {loading ? '...' : user.email}</p>
                             <span className='flex flex-row gap-3'>
                                 <p>Comidas favoritas:</p>
+                                {loading ? '...' : user.preferences.map(preference => <Tag key={preference} valor={preference} />)}
                             </span>
                             <span className='flex flex-row gap-3'>
                                 <p>Alergias y restricciones:</p>
