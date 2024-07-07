@@ -12,11 +12,11 @@ export class RecipeService {
     return await recipeRepository.createRecipe(createRecipeDto);
   }
 
-  async findAll(user?: UserPayload) {
-    let recipes = await recipeRepository.findAll();
+  async findAll(category?: string, user?: UserPayload) {
+    let recipes = await recipeRepository.findAll(category);
 
     if (user) {
-      recipes = await recipeRepository.findAll(user.id);
+      recipes = await recipeRepository.findAll(category, user.id);
       recipes = recipes.map((recipe) => ({
         ...recipe,
         userId: user.id,

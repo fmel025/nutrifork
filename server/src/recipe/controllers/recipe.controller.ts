@@ -1,6 +1,14 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { RecipeService } from '../services';
-import { CreateRecipeDto } from '../dto';
+import { CreateRecipeDto, SearchByCategoryDto } from '../dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
@@ -27,8 +35,9 @@ export class RecipeController {
     description: 'Use it to get all recipes',
   })
   @Get()
-  findAll() {
-    return this.recipeService.findAll();
+  findAll(@Query() query: SearchByCategoryDto) {
+    const { category } = query;
+    return this.recipeService.findAll(category);
   }
 
   @ApiOperation({
@@ -37,8 +46,12 @@ export class RecipeController {
   })
   @UseGuards(JwtAuthGuard)
   @Get('user')
-  findAllForUsers(@User() user: UserPayload) {
-    return this.recipeService.findAll(user);
+  findAllForUsers(
+    @User() user: UserPayload,
+    @Query() query: SearchByCategoryDto,
+  ) {
+    const { category } = query;
+    return this.recipeService.findAll(category, user);
   }
 
   @ApiOperation({

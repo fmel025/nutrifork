@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Body, UseGuards, Patch } from '@nestjs/common';
 import { RatingService } from '../services';
 import { UpsertRatingDto } from '../dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -13,11 +13,11 @@ export class RatingController {
   constructor(private readonly ratingService: RatingService) {}
 
   @ApiOperation({
-    summary: 'Add a rating to a recipe',
-    description: 'Use it to access add a rating to a recipe',
+    summary: 'Add or update a rating to a recipe',
+    description: 'Use it to access add or update a rating to a recipe',
   })
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Patch()
   upsert(@Body() createRatingDto: UpsertRatingDto, @User() user: UserPayload) {
     const { id } = user;
     return this.ratingService.upsert(createRatingDto, id);

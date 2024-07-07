@@ -5,6 +5,7 @@ import { ConfigModule } from '@Config/config.module';
 import { UploadImageModule } from '@UploadImage/upload-image.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { RatingModule } from './rating/rating.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RatingModule } from './rating/rating.module';
     UploadImageModule,
     RecipeModule,
     RatingModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],

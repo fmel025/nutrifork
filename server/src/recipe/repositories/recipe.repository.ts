@@ -27,16 +27,31 @@ export class RecipeRepository {
     });
   }
 
-  async findAll(userId?: string): Promise<Recipe[]> {
+  async findAll(category?: string, userId?: string): Promise<Recipe[]> {
+    let where = {};
+
+    if (category) {
+      where = {
+        categories: {
+          has: category,
+        },
+      };
+    }
     return prisma.recipe.findMany({
-      include: {
+      where,
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        categories: true,
+        userIDs: true,
         users: {
           where: {
             id: userId,
           },
         },
       },
-    });
+    }) as unknown as Recipe[];
   }
 
   async findByCategories(categories: string[]) {
