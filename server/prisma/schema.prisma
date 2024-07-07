@@ -41,6 +41,16 @@ model Recipe {
   users        User[]   @relation(fields: [userIDs], references: [id])
 }
 
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+}
+
+model Allergy {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+}
+
 model Rating {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   recipe   Recipe @relation(fields: [recipeId], references: [id])
