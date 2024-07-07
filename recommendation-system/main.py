@@ -42,8 +42,9 @@ async def main(app: FastAPI):
 
     await prisma.disconnect()
 
-app = FastAPI(lifespan=main)
+app = FastAPI(lifespan=main, description='Sistema de recomendaciones de nutrifork', title='Nutrifork ML API')
 
+# Cronjob to retrain the model
 @repeat_every(seconds=60*10)
 async def update_model():
     print(":: Updating model")
@@ -52,7 +53,7 @@ async def update_model():
     model.fit(trainset)
     print(':: Info model updated successfully')
 
-@app.get("/recommend")
+@app.get("/recommend", tags=['Recomendaciones'], description='Use it to get recommendations', summary='Get recommendations')
 async def recommend(user_id: str, num_recommendations: int = 5):
     data = await prisma.rating.find_many()
 
