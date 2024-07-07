@@ -19,7 +19,7 @@ model User {
   username       String
   email          String
   password       String
-  active         Boolean  @default(false)
+  deleted        Boolean  @default(false)
   avatar         String?
   avatarPublicId String?
   allergies       String[]
