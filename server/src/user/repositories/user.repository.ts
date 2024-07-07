@@ -25,14 +25,14 @@ class UserRepository {
 
   async findOneByEmail(email: string) {
     const user = await prisma.user.findFirst({
-      where: { email },
+      where: { email, deleted: { not: true } },
     });
     return user;
   }
 
   async findOneByUsername(username: string) {
     const user = await prisma.user.findFirst({
-      where: { username },
+      where: { username, deleted: { not: true } },
     });
 
     return user;
@@ -110,7 +110,14 @@ class UserRepository {
     });
   }
 
-  return;
+  async delete(id: string) {
+    await prisma.user.update({
+      where: { id },
+      data: {
+        deleted: true,
+      },
+    });
+  }
 }
 
 export const userRepository = new UserRepository();

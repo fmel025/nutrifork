@@ -203,4 +203,12 @@ export class UserService {
       `Recipe ${!isRecipeFavorite ? 'added to' : 'removed from'} favorites`,
     );
   }
+
+  async delete(user: UserPayload) {
+    const { id } = user;
+
+    await userRepository.delete(id);
+
+    return successResponse({}, 'User deleted successfully', 200);
+  }
 }
