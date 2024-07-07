@@ -29,14 +29,19 @@ export class RecipeRepository {
 
   async findAll(userId?: string): Promise<Recipe[]> {
     return prisma.recipe.findMany({
-      include: {
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        categories: true,
+        userIDs: true,
         users: {
           where: {
             id: userId,
           },
         },
       },
-    });
+    }) as unknown as Recipe[];
   }
 
   async findByCategories(categories: string[]) {
