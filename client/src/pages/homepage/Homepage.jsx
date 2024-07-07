@@ -1,7 +1,6 @@
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
-
 export default function Homepage({ loggedIn }) {
     return (
         <div className="flex flex-col justify-between font-Poppins min-h-screen w-full bg-white">
@@ -27,16 +26,22 @@ export default function Homepage({ loggedIn }) {
                         <img src="/src/assets/potatoes.webp" alt="Papas" class="w-42 h-72 px-20"/>
                     </div>
                     <div class="flex flex-col items-center">
+                        <button>
                         <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
                         <p className="py-6">Chili Mac & Cheese</p>
+                        </button>
                     </div>
                     <div class="flex flex-col items-center">
+                        <button>
                         <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
                         <p className="py-6">Chili Mac & Cheese</p>
+                        </button>
                     </div>
                     <div class="flex flex-col items-center">
+                        <button>
                         <img src="/src/assets/recipe.webp" alt="Chili Mac & Cheese" class="w-60"/>
                         <p className="py-6">Chili Mac & Cheese</p>
+                        </button>
                     </div>
                     
                     <div class="flex flex-col items-center">
@@ -44,7 +49,6 @@ export default function Homepage({ loggedIn }) {
                     </div>
                 </div>
             </div>
-
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col lg:flex-row items-center">
                     <img src="/src/assets/food-4.webp" className="w-full max-w-md lg:max-w-lg lg:w-1/2 lg:ml-8" alt="Vegetales" />
