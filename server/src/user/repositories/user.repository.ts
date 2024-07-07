@@ -25,14 +25,14 @@ class UserRepository {
 
   async findOneByEmail(email: string) {
     const user = await prisma.user.findFirst({
-      where: { email, deleted: false },
+      where: { email, deleted: { not: true } },
     });
     return user;
   }
 
   async findOneByUsername(username: string) {
     const user = await prisma.user.findFirst({
-      where: { username, deleted: false },
+      where: { username, deleted: { not: true } },
     });
 
     return user;
