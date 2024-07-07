@@ -6,6 +6,7 @@ import { UserService } from '@User/services/user.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -96,5 +97,14 @@ export class UserController {
     @User() loggedUser: UserPayload,
   ) {
     return await this.userService.updateAvatar(file, loggedUser);
+  }
+
+  @ApiOperation({
+    summary: 'Delete an user',
+    description: 'Use it to delete an user',
+  })
+  @Delete()
+  async deleteUser(@User() loggedUser: UserPayload) {
+    return await this.userService.delete(loggedUser);
   }
 }
