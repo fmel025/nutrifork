@@ -12,9 +12,11 @@ import { UploadImageService } from '@UploadImage/services';
 import { UserPayload } from '@Common/types';
 import { UpdateUserDto } from '@User/dto';
 import { successResponse } from '@Common/utils/success-response';
-import { Recipe, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { RecipeService } from 'src/recipe/services';
+import { plainToInstance } from 'class-transformer';
 // import { prisma } from '@Common/database';
+import { RecipeResponseDoc } from '../../recipe/doc/recipe-response.doc';
 
 @Injectable()
 export class UserService {
@@ -61,11 +63,13 @@ export class UserService {
       data.password = hashedPassword;
     }
 
-    if (email) {
+    const user = await userRepository.findOneById(loggedUser.id);
+
+    if (email && user.email !== email) {
       await this.validateEmail(email);
     }
 
-    if (username) {
+    if (username && user.username !== username) {
       await this.validateUsername(username);
     }
 
@@ -153,9 +157,21 @@ export class UserService {
     }
   }
 
-  async findAllFavoriteRecipes(userId: string): Promise<Recipe[]> {
-    const recipes = userRepository.findAllFavoritedByUser(userId);
-    return recipes;
+  async findAllFavoriteRecipes(userId: string) {
+    const recipes = await userRepository.findAllFavoritedByUser(userId);
+    const recipesWithUserId = recipes.map((recipe) => ({ ...recipe, userId }));
+    const parsedRecipes = plainToInstance(
+      RecipeResponseDoc,
+      recipesWithUserId,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
+    return successResponse(
+      parsedRecipes,
+      'Favorite recipes retrieved successfully',
+      200,
+    );
   }
 
   async setFavoriteRecipe(recipeId: string, user: UserPayload) {
@@ -175,13 +191,16 @@ export class UserService {
       throw new NotFoundException('Recipe not found');
     }
 
-    // TODO: If recipe is favorite, then remove it from favorites.
+    const isRecipeFavorite: boolean = loggedUser.favoriteIDs.includes(recipeId);
 
-    const favorites = await userRepository.setUserFavoriteRecipe(
-      loggedUser.id,
-      recipe.data.id,
+    if (!isRecipeFavorite)
+      await userRepository.setUserFavoriteRecipe(loggedUser.id, recipe.data.id);
+    else
+      await userRepository.unSetFavoriteRecipe(loggedUser.id, recipe.data.id);
+
+    return successResponse(
+      { isFavorite: !isRecipeFavorite },
+      `Recipe ${!isRecipeFavorite ? 'added to' : 'removed from'} favorites`,
     );
-
-    return successResponse(favorites, 'Recipe added to favorites');
   }
 }

@@ -63,8 +63,8 @@ export class UserController {
   }
 
   @ApiOperation({
-    summary: 'Set a recipe as favorite',
-    description: 'Use it to set a recipe as favorite',
+    summary: 'Get favorite recipes',
+    description: 'Use it to get favorite recipes',
   })
   @Get('favorite')
   async getFavoriteRecipes(@User() user: UserPayload) {
@@ -84,6 +84,10 @@ export class UserController {
         },
       },
     },
+  })
+  @ApiOperation({
+    summary: 'Set an user avatar',
+    description: 'Use it to set an avatar for an user',
   })
   @Patch('avatar')
   async updateAvatar(

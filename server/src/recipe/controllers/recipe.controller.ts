@@ -1,12 +1,21 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { RecipeService } from '../services';
-import { CreateRecipeDto } from '../dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateRecipeDto, SearchByCategoryDto } from '../dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
 import { UserPayload } from '@Common/types';
 
 @ApiTags('Recipe')
+@ApiBearerAuth()
 @Controller('recipe')
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
@@ -26,17 +35,23 @@ export class RecipeController {
     description: 'Use it to get all recipes',
   })
   @Get()
-  findAll() {
-    return this.recipeService.findAll();
+  findAll(@Query() query: SearchByCategoryDto) {
+    const { category } = query;
+    return this.recipeService.findAll(category);
   }
 
   @ApiOperation({
-    summary: 'Use it to get one by id',
-    description: 'Use it to get one by id',
+    summary: 'Use it to get all recipes for logged users',
+    description: 'Use it to get all recipes for logged users',
   })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recipeService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  @Get('user')
+  findAllForUsers(
+    @User() user: UserPayload,
+    @Query() query: SearchByCategoryDto,
+  ) {
+    const { category } = query;
+    return this.recipeService.findAll(category, user);
   }
 
   @ApiOperation({
@@ -50,12 +65,11 @@ export class RecipeController {
   }
 
   @ApiOperation({
-    summary: 'Use it to get all recipes for logged users',
-    description: 'Use it to get all recipes for logged users',
+    summary: 'Use it to get one by id',
+    description: 'Use it to get one by id',
   })
-  @UseGuards(JwtAuthGuard)
-  @Get('all/user')
-  findAllForUsers(@User() user: UserPayload) {
-    return this.recipeService.findAll(user);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.recipeService.findOne(id);
   }
 }

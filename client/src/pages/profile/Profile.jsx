@@ -58,7 +58,7 @@ function Profile() {
                     </div>
                     <div className="avatar flex items-center justify-center">
                         <div className="w-1/2 lg:w-3/5 rounded-full">
-                            <img src="/src/assets/avatars/avatar-8.webp" />
+                            <img src="/src/assets/avatar.webp" />
                         </div>
                     </div>
                 </section>

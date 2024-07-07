@@ -12,11 +12,15 @@ export class RecipeService {
     return await recipeRepository.createRecipe(createRecipeDto);
   }
 
-  async findAll(user?: UserPayload) {
-    let recipes = await recipeRepository.findAll();
+  async findAll(category?: string, user?: UserPayload) {
+    let recipes = await recipeRepository.findAll(category);
 
     if (user) {
-      recipes = await recipeRepository.findAll(user.id);
+      recipes = await recipeRepository.findAll(category, user.id);
+      recipes = recipes.map((recipe) => ({
+        ...recipe,
+        userId: user.id,
+      }));
     }
 
     const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes, {
@@ -30,14 +34,21 @@ export class RecipeService {
     if (!user) {
       const recipe = await recipeRepository.findById(id);
       delete recipe.userIDs;
-      return successResponse(recipe);
+      const transformedRecipe = plainToInstance(RecipeResponseDoc, recipe, {
+        excludeExtraneousValues: true,
+      });
+      return successResponse(transformedRecipe);
     }
 
     const recipe = await recipeRepository.findById(id, user.id);
 
-    const transformedRecipe = plainToInstance(RecipeResponseDoc, recipe, {
-      excludeExtraneousValues: true,
-    });
+    const transformedRecipe = plainToInstance(
+      RecipeResponseDoc,
+      { ...recipe, userId: user.id },
+      {
+        excludeExtraneousValues: true,
+      },
+    );
 
     return successResponse(transformedRecipe);
   }

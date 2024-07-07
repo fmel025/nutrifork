@@ -16,7 +16,7 @@ class UserRepository {
   }
 
   async findOneById(id: string) {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: { id },
     });
 
@@ -39,9 +39,31 @@ class UserRepository {
   }
 
   async update(id: string, data: UpdateUserType | UpdateUserDto) {
+    let extra = {};
+
+    if (data?.preferences) {
+      extra = {
+        ...extra,
+        preferences: {
+          set: data.preferences,
+        },
+      };
+    }
+
+    if (data?.allergies) {
+      extra = {
+        ...extra,
+        allergies: {
+          set: data.allergies,
+        },
+      };
+    }
     const user = await prisma.user.update({
       where: { id },
-      data: data as UpdateUserType,
+      data: {
+        ...data,
+        ...extra,
+      },
     });
 
     return user;
@@ -73,6 +95,22 @@ class UserRepository {
 
     return user.favorites;
   }
+
+  async unSetFavoriteRecipe(userId: string, recipeId: string) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        favorites: {
+          disconnect: { id: recipeId },
+        },
+      },
+      include: {
+        favorites: true,
+      },
+    });
+  }
+
+  return;
 }
 
 export const userRepository = new UserRepository();

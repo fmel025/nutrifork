@@ -22,7 +22,8 @@ model User {
   active         Boolean  @default(false)
   avatar         String?
   avatarPublicId String?
-  alergies       String[]
+  allergies       String[]
+  preferences    String[]
   rating         Rating[]
   favoriteIDs    String[] @db.ObjectId
   favorites      Recipe[] @relation(fields: [favoriteIDs], references: [id])
@@ -39,6 +40,16 @@ model Recipe {
   rating       Rating[]
   userIDs      String[] @db.ObjectId
   users        User[]   @relation(fields: [userIDs], references: [id])
+}
+
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+}
+
+model Allergy {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
 }
 
 model Rating {

@@ -2,8 +2,10 @@ import FoodRec from "../../components/foodRec/FoodRec";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import RecipeCard from "../../components/recipeCard/RecipeCard";
+import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function Homepage({ loggedIn }) {
+
     return (
         <div className="flex flex-col justify-between font-Poppins min-h-screen w-full bg-white">
             <Navbar />
