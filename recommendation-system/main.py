@@ -6,6 +6,7 @@ from surprise.model_selection import train_test_split
 from surprise import accuracy
 from contextlib import asynccontextmanager
 import pandas as pd
+from fastapi_utilities import repeat_at, repeat_every
 
 prisma = Prisma()
 model = SVD()
@@ -36,20 +37,28 @@ async def main(app: FastAPI):
     model.fit(trainset)
     print(':: Info model trained successfully')
 
+    await update_model()
     yield
 
     await prisma.disconnect()
 
 app = FastAPI(lifespan=main)
 
-
+@repeat_every(seconds=60*10)
+async def update_model():
+    print(":: Updating model")
+    data = await prisma.rating.find_many()
+    trainset = format_data_for_surprise(data)
+    model.fit(trainset)
+    print(':: Info model updated successfully')
 
 @app.get("/recommend")
 async def recommend(user_id: str, num_recommendations: int = 5):
     data = await prisma.rating.find_many()
-    formatted_data = format_db_data(data)
-    
-    df = pd.DataFrame(formatted_data)
+
+    formated_data = format_db_data(data)
+
+    df = pd.DataFrame(formated_data)
     all_items = df['recipeId'].unique()
     
     # Check if user exists
