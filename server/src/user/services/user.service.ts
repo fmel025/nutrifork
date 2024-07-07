@@ -157,7 +157,7 @@ export class UserService {
 
   async findAllFavoriteRecipes(userId: string) {
     const recipes = await userRepository.findAllFavoritedByUser(userId);
-    const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes);
+    const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes, { excludeExtraneousValues: true });
     return successResponse(
       parsedRecipes,
       'Favorite recipes retrieved successfully',
