@@ -23,6 +23,7 @@ model User {
   avatar         String?
   avatarPublicId String?
   alergies       String[]
+  preferences    String[]
   rating         Rating[]
   favoriteIDs    String[] @db.ObjectId
   favorites      Recipe[] @relation(fields: [favoriteIDs], references: [id])
