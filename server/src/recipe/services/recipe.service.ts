@@ -81,7 +81,7 @@ export class RecipeService {
       );
 
       return successResponse(
-        plainToInstance(RecipeResponseDoc, recipes, {
+        plainToInstance(RecipeResponseDoc, recipes[0], {
           excludeExtraneousValues: true,
         }),
       );
@@ -95,7 +95,7 @@ export class RecipeService {
       );
 
       return successResponse(
-        plainToInstance(RecipeResponseDoc, recipes, {
+        plainToInstance(RecipeResponseDoc, recipes[0], {
           excludeExtraneousValues: true,
         }),
       );
