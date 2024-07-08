@@ -27,6 +27,7 @@ export default function ChangeAvatarBtn() {
 
         try {
             await updateAvatar(file);
+            alert("Tu foto se actualizó correctamente.");
             setError(null);
             window.location.reload();
         } catch (error) {

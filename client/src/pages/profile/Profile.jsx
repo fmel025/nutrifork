@@ -78,7 +78,7 @@ function Profile() {
                     </div>
                     <div className="avatar flex items-center justify-center">
                         <div className="w-1/2 md:w-2/5 lg:w-3/4 rounded-full">
-                            <img src={!loading && user.avatar ? `${user.avatar}` : "/src/assets/no-picture.webp"} />
+                            <img src={!loading && user.avatar ? `${user.avatar}` : "no-picture.webp"} />
                         </div>
                     </div>
                 </section>

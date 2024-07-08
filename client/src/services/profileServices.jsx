@@ -93,8 +93,7 @@ export const updateAvatar = async (file) => {
 export const updateRecipeFavorite = async (recipeId) => {
     try {
         const token = localStorage.getItem('token');
-        console.log(token);
-        console.log(recipeId);
+        
         if (!token) {
             throw new Error('No token found');
         }
@@ -104,7 +103,7 @@ export const updateRecipeFavorite = async (recipeId) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log("Hecho");
+        
         return response.data;
     } catch (error) {
         console.error('Error updating favorite status:', error);

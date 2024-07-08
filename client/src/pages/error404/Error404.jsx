@@ -15,9 +15,9 @@ export default function Error404() {
                 </div>
 
                 <div className="flex items-center justify-center p-6 lg:p-0">
-                    <img className="h-28 md:h-40 lg:h-48" src="/src/assets/four.webp" alt="Four number" />
-                    <img className="h-28 md:h-40 lg:h-48" src="/src/assets/food-2.webp" alt="Salad" />
-                    <img className="h-28 md:h-40 lg:h-48" src="/src/assets/four.webp" alt="Four number" />
+                    <img className="h-28 md:h-40 lg:h-48" src="four.webp" alt="Four number" />
+                    <img className="h-28 md:h-40 lg:h-48" src="food-2.webp" alt="Salad" />
+                    <img className="h-28 md:h-40 lg:h-48" src="four.webp" alt="Four number" />
                 </div>
             </section>
 
