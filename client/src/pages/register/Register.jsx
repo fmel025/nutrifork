@@ -20,10 +20,13 @@ export default function Login() {
         }
 
         try {
-            const message = await register(fullName, username, email, password);
-            console.log(message);
-            navigate('/iniciar-sesion');
-            window.location.reload();
+            const token = await register(fullName, username, email, password);
+
+            if (token) {
+                localStorage.setItem('token', token);
+                navigate('/encuesta');
+                window.location.reload();
+            }
         } catch (error) {
             console.error("Registration failed: ", error);
         }
