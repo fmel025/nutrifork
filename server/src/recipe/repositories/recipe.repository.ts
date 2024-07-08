@@ -67,6 +67,18 @@ export class RecipeRepository {
       },
     });
   }
+
+  async findByCategoriesForUser(preferences: string[]) {
+    const recipes = prisma.recipe.findMany({
+      where: {
+        categories: {
+          hasSome: preferences,
+        },
+      },
+    });
+
+    return recipes;
+  }
 }
 
 export const recipeRepository: RecipeRepository = new RecipeRepository();
