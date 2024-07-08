@@ -40,12 +40,14 @@ export const getUserFavorites = async () => {
     }
 };
 
-export const updateUser = async ({ fullName, username, email, password }) => {
+export const updateUser = async ({ fullName, username, email, password, allergies, preferences }) => {
     const requestBody = {
         fullName,
         username,
         email,
-        password
+        password,
+        allergies,
+        preferences
     };
 
     try {
@@ -109,3 +111,22 @@ export const updateRecipeFavorite = async (recipeId) => {
         throw error;
     }
 };
+
+export const deleteAccount = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.delete(`/user`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.error('Error deleting user account: ', error);
+    }
+}

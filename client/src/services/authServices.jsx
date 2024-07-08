@@ -36,7 +36,8 @@ export const register = async (fullName, username, email, password) => {
         });
 
         if (response.status === 201) {
-            return "User registered successfully";
+            const { accessToken } = response.data;
+            return accessToken;
         }
 
     } catch (error) {

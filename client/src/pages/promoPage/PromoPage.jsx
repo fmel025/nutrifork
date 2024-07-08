@@ -15,7 +15,6 @@ export default function PromoPage() {
 
             if (response) {
                 setRecipes(response.data);
-                console.log(response.data);
             }
         } catch (error) {
             console.error('Error al obtener datos de la API:', error);

@@ -49,7 +49,7 @@ function App() {
           </Route>
 
           <Route path='/' element={<Home />} />
-          <Route path='/preferencias' element={<Preferences />} />
+          <Route path='/encuesta' element={<Preferences />} />
           <Route path='/receta/:id' element={<Recipes />} />
           <Route path='*' element={<Error404 />} />
         </Routes>

@@ -22,7 +22,7 @@ export default function Navbar() {
                             <ul tabIndex={0} className="menu dropdown-content p-2 my-6 gap-2 border-2 border-dark-green bg-white text-sm md:text-base text-black font-normal rounded-md w-52 shadow-[0_2px_10px_2px_rgb(0,0,0,0.05)]">
                                 <Link to={'/perfil'}><li className="rounded-md hover:bg-accent-green hover:text-white"><a>Perfil</a></li></Link>
                                 <Link to={'/ajustes'}><li className="rounded-md hover:bg-accent-green hover:text-white"><a>Ajustes</a></li></Link>
-                                <Link to={'/'}><li className="rounded-md hover:bg-accent-green hover:text-white" onClick={logout}><a>Cerrar sesión</a></li></Link>
+                                <li className="rounded-md hover:bg-accent-green hover:text-white" onClick={logout}><a>Cerrar sesión</a></li>
                             </ul>
                         </div>
                     ) : (

@@ -1,22 +1,24 @@
-// src/pages/settings/Settings.jsx
-
 import Navbar from '../../components/navbar/Navbar';
 import Footer from '../../components/footer/Footer';
 import PrefDropdown from '../../components/prefDropdown/PrefDropdown';
-import { useEffect, useState } from 'react';
-import { getUser, updateUser } from '../../services/profileServices';
 import Avatar from '../../components/avatar/Avatar';
 import ChangeAvatarBtn from '../../components/changeAvatarBtn/ChangeAvatarBtn';
+import { useEffect, useState } from 'react';
+import { deleteAccount, getUser, updateUser } from '../../services/profileServices';
+import { useNavigate } from 'react-router-dom';
+import { getAllergies, getFoodOptions } from '../../services/categoriesServices';
 
 export default function Settings() {
-    const foodOptions = ['Mexicana', 'Ensaladas', 'Italiana'];
-    const restrictionOptions = ['Gluten', 'Lácteos', 'Mariscos'];
-    const [avatarUrl, setAvatarUrl] = useState('/src/assets/avatar.webp');
+    const navigate = useNavigate();
+    const [allergyData, setAllergyData] = useState([]);
+    const [foodData, setFoodData] = useState([]);
     const [userData, setUserData] = useState({
         fullName: '',
         username: '',
         email: '',
-        password: ''
+        password: '',
+        allergies: [], // Aquí se guardarán las alergias seleccionadas
+        preferences: [] // Aquí se guardarán las preferencias seleccionadas
     });
 
     const getUserData = async () => {
@@ -25,10 +27,30 @@ export default function Settings() {
 
             if (response) {
                 setUserData(response.data);
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de la API:', error);
+        }
+    };
 
-                if (response.data.avatarUrl) {
-                    setAvatarUrl(response.data.avatarUrl);
-                }
+    const fetchAllergies = async () => {
+        try {
+            const response = await getAllergies();
+
+            if (response) {
+                setAllergyData(response);
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de la API:', error);
+        }
+    };
+
+    const fetchFoodOptions = async () => {
+        try {
+            const response = await getFoodOptions();
+
+            if (response) {
+                setFoodData(response);
             }
         } catch (error) {
             console.error('Error al obtener datos de la API:', error);
@@ -37,9 +59,23 @@ export default function Settings() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData((userData) => ({
-            ...userData,
+        setUserData((prevUserData) => ({
+            ...prevUserData,
             [name]: value
+        }));
+    };
+
+    const handleAllergiesChange = (selectedAllergies) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            allergies: selectedAllergies // Actualiza las alergias seleccionadas en el estado de userData
+        }));
+    };
+
+    const handlePreferencesChange = (selectedPreferences) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            preferences: selectedPreferences // Actualiza las preferencias seleccionadas en el estado de userData
         }));
     };
 
@@ -47,15 +83,34 @@ export default function Settings() {
         e.preventDefault();
 
         try {
-            const { fullName, username, email, password } = userData;
-            await updateUser({ fullName, username, email, password });
+            const { fullName, username, email, password, allergies, preferences } = userData;
+            await updateUser({ fullName, username, email, password, allergies, preferences });
         } catch (error) {
             console.error('Error al actualizar datos: ', error);
         }
     };
 
+    const handleDeleteAccount = async () => {
+        const confirmed = window.confirm("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.");
+
+        if (confirmed) {
+            try {
+                await deleteAccount();
+                localStorage.removeItem('token');
+                alert("Tu cuenta ha sido eliminada.");
+                navigate('/');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al borrar la cuenta: ', error);
+                alert("Hubo un problema al borrar tu cuenta. Por favor intenta de nuevo.");
+            }
+        }
+    };
+
     useEffect(() => {
         getUserData();
+        fetchAllergies();
+        fetchFoodOptions();
     }, []);
 
     return (
@@ -73,8 +128,7 @@ export default function Settings() {
 
                     <h2 id="informacion" className="text-xl md:text-2xl lg:text-3xl text-black font-medium py-6">Información personal</h2>
                     <div className="flex flex-col items-center w-full md:hidden">
-                        <Avatar avatarUrl={avatarUrl} width="w-1/2" />
-
+                        <Avatar width="w-1/2" />
                         <ChangeAvatarBtn />
                     </div>
 
@@ -87,11 +141,20 @@ export default function Settings() {
                         <input name="email" value={userData.email} onChange={handleChange} type="email" className="input h-10 rounded-md input-bordered focus:border-2 text-xs md:text-sm focus:outline-0 w-full" />
                         <p className="py-3 text-black font-normal">Contraseña</p>
                         <input name="password" placeholder='**********' type="password" className="input placeholder:text-black h-10 rounded-md input-bordered text-xs md:text-sm focus:border-2 focus:outline-0 w-full" />
-
-                        <div className="grid md:grid-flow-row md:gap-0 lg:grid-cols-2 lg:gap-8">
-                            <PrefDropdown label="Comidas favoritas" options={foodOptions} placeholder="3 opciones seleccionadas" />
-                            <PrefDropdown label="Alergias" options={restrictionOptions} placeholder="2 opciones seleccionadas" />
-                        </div>
+                        <PrefDropdown
+                            label="Comidas favoritas"
+                            options={foodData}
+                            selectedOptions={userData.preferences}
+                            placeholder="Selecciona tus comidas preferidas"
+                            onChange={handlePreferencesChange}
+                        />
+                        <PrefDropdown
+                            label="Alergias"
+                            options={allergyData}
+                            selectedOptions={userData.allergies}
+                            placeholder="Selecciona tus alergias"
+                            onChange={handleAllergiesChange}
+                        />
 
                         <button type='submit' className="btn btn-sm my-10 text-center text-base font-normal text-white border-0 bg-dark-green hover:bg-accent-green h-10 w-full md:w-96 lg:w-64">Guardar cambios</button>
                     </form>
@@ -99,11 +162,11 @@ export default function Settings() {
                     <h2 id="detalles" className="text-xl md:text-2xl lg:text-3xl text-black font-medium py-6">Detalles de la cuenta</h2>
                     <p className="py-3 text-lg md:text-xl text-danger font-medium">Borrar cuenta</p>
                     <p className="py-1 text-sm md:text-base text-black font-normal">Una vez que borres tu cuenta, no hay vuelta atrás. Procede con precaución.</p>
-                    <button className="btn btn-sm my-8 text-center text-base font-normal text-white border-0 bg-danger hover:bg-red-600 h-10 w-full md:w-96 lg:w-64">Borrar mi cuenta</button>
+                    <button onClick={handleDeleteAccount} className="btn btn-sm my-8 text-center text-base font-normal text-white border-0 bg-danger hover:bg-red-600 h-10 w-full md:w-96 lg:w-64">Borrar mi cuenta</button>
                 </div>
 
                 <div className="w-[240px] hidden md:block">
-                    <Avatar avatarUrl={avatarUrl} width="w-fit" />
+                    <Avatar width="w-fit" />
                     <ChangeAvatarBtn />
                 </div>
             </div>
