@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import * as streamifier from 'streamifier';
 
+// Servicio utilizado para subir imagenes
 @Injectable()
 export class UploadImageService {
   constructor(private readonly configService: ConfigService) {
