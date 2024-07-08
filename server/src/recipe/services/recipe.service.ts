@@ -25,6 +25,7 @@ export class RecipeService {
       }));
     }
 
+    // Plain to instance, transforms the class into the one passed first argument
     const parsedRecipes = plainToInstance(RecipeResponseDoc, recipes, {
       excludeExtraneousValues: true,
     });
@@ -55,6 +56,7 @@ export class RecipeService {
     return successResponse(transformedRecipe);
   }
 
+  // This service calls the recommendation API to get recommendations for recipes
   async getRecommendations(user: UserPayload) {
     const { id } = user;
 
@@ -65,6 +67,7 @@ export class RecipeService {
 
       const data = response.data.recommendations as string[];
 
+      // If there are recommendations, return the first one
       if (data.length > 0) {
         const recipe = await recipeRepository.findById(data[0]);
         return successResponse(
@@ -76,6 +79,7 @@ export class RecipeService {
 
       const user = await userRepository.findOneById(id);
 
+      // If no recommendations are found, fetch the first recipe by category from the user's preferences
       const recipes = await recipeRepository.findByCategoriesForUser(
         user.preferences,
       );
@@ -88,6 +92,8 @@ export class RecipeService {
     } catch (err) {
       console.error(`Error fetching recommendations: ${err.message}`);
 
+      // If calling the recommendation API fails, we make the same as before
+      // and return some matching the user preferences
       const user = await userRepository.findOneById(id);
 
       const recipes = await recipeRepository.findByCategoriesForUser(

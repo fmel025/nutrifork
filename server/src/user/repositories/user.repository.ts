@@ -4,6 +4,8 @@ import { CreateUserDto } from '@Auth/dto';
 import { UpdateUserDto } from '@User/dto';
 import { Recipe } from '@prisma/client';
 
+// Used to make the connections between the ORM/ODM (DB) with our API
+// Without exposing this methods
 class UserRepository {
   async create(user: CreateUserDto) {
     const createdUser = await prisma.user.create({
@@ -120,4 +122,5 @@ class UserRepository {
   }
 }
 
+// We use singleton for repositories as convention
 export const userRepository = new UserRepository();

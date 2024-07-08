@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
 import { UserPayload } from '@Common/types';
 
+// Recipes endpoints
 @ApiTags('Recipe')
 @ApiBearerAuth()
 @Controller('recipe')

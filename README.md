@@ -19,4 +19,4 @@ Nutrifork es una aplicación bajo la licencia [MIT License](./LICENSE)
 ## Enlaces importantes
 
 - [Manual de instalación y uso de la API](server/README.md)
-- [Manual de instalación del frontend ](client/README.md)
+- [Manual de instalación de la API de recomendaciones](recommendation-system/README.md)

@@ -61,6 +61,13 @@ Puede que algunos endpoints no sean del todo públicos ya que se utilizan prefer
 
 <img src="assets/nutrifork-bearer-example.png" alt="Ejemplo bearer token nutrifork" />
 
+## Términos utilizados dentro de la API
+
+- **DTO** o data transfer object es utilizado para estandarizar y validar los datos que recibirá un método POST, PATCH, o PUT.
+- **Doc** es un tipo de clase que transforma un objecto de Typescript en otra basado en los campos que este posee.
+- **Guards** son decoradores que nos sirven para permitir el acceso a endpoints bajo ciertas circunstancias.
+- **Prisma** ORM/ODM utilizado en este proyecto para conectar a una base de datos de MongoDB.
+
 ## Créditos
 
 - Autor de NestJS - [Kamil Myśliwiec](https://kamilmysliwiec.com)
