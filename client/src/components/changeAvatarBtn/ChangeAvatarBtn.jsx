@@ -3,18 +3,17 @@ import { updateAvatar } from '../../services/profileServices';
 
 export default function ChangeAvatarBtn() {
     const [avatar, setAvatar] = useState(null);
-    const [loading, setLoading] = useState(false); // Estado para indicar carga
-    const [error, setError] = useState(null); // Estado para manejar errores
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        setLoading(false); // Reiniciar estado de carga cuando finaliza
+        setLoading(false);
     }, [avatar]);
 
     const handleAvatarChange = async (e) => {
         const file = e.target.files[0];
 
-        // Validar tipo de archivo
-        if (!file) return; // Evitar errores si no hay archivo seleccionado
+        if (!file) return;
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de archivo permitidos
 
@@ -24,11 +23,12 @@ export default function ChangeAvatarBtn() {
         }
 
         setAvatar(file);
-        setLoading(true); // Comenzar carga
+        setLoading(true);
 
         try {
             await updateAvatar(file);
-            setError(null); // Limpiar errores si la actualización fue exitosa
+            setError(null);
+            window.location.reload();
         } catch (error) {
             console.error('Error al actualizar el avatar: ', error);
             setError('Error al actualizar el avatar. Por favor intenta de nuevo.');
@@ -36,9 +36,9 @@ export default function ChangeAvatarBtn() {
     };
 
     return (
-        <div className="relative">
+        <div className="flex flex-col items-center justify-center">
             {error && (
-                <div className="text-danger text-xs mb-2">{error}</div>
+                <div className="text-danger text-center text-xs my-2 w-9/12">{error}</div>
             )}
 
             {loading && (

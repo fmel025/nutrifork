@@ -15,7 +15,6 @@ export default function RecipeCard({recipe}) {
             await updateRecipeFavorite(recipe.id);  // Actualiza en el servidor
         } catch (error) {
             console.error('Error updating favorite status:', error);
-            // Revertir el estado en caso de error
             setIsFavorite(!isFavorite);
         }
     };
@@ -24,8 +23,7 @@ export default function RecipeCard({recipe}) {
     return (
         <div className="card bg-white w-auto border-2 border-gray-200">
             <figure className="h-auto md:h-44">
-                <img className="bg-cover w-full" src={recipe.image
-                } alt="Recipe cover" />
+                <img className="bg-cover w-full" src={recipe.image} alt="Recipe cover" />
             </figure>
 
             <div className="card-body flex flex-row justify-between items-center">

@@ -1,12 +1,16 @@
 import axios from 'axios'
 
-export const getAllRecipes = async () => {
+export const getAllRecipes = async (category = '') => {
     try {
         const token = localStorage.getItem('token');
+        let url = '/recipe';
+
+        if (category) {
+            url += `?category=${encodeURIComponent(category)}`;
+        }
 
         if (!token) {
-            console.log("No hay token")
-            const response = await axios.get(`/recipe`);
+            const response = await axios.get(url);
 
             if (response.status === 200) {
                 return response.data;
@@ -15,12 +19,11 @@ export const getAllRecipes = async () => {
             }
         }
 
-        const response = await axios.get(`recipe/user`, {
+        const response = await axios.get(url, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-
 
         if (response.status === 200) {
             return response.data;
@@ -32,6 +35,7 @@ export const getAllRecipes = async () => {
         return [];
     }
 };
+
 
 export const getRecipeById = async (recipeId) => {
     try {
