@@ -17,6 +17,7 @@ Este sistema de recomendaciones se basa en la popularidad de las recetas asi com
 
 1. Tener instalado python en el ordenador
 2. Tener una URL con acceso a la base de datos
+3. Tener una version de Linux (Pop Os, Mint o Ubuntu) para ejecutar ciertos paquetes.
 
 ## Instalación
 
@@ -33,7 +34,9 @@ Este sistema de recomendaciones se basa en la popularidad de las recetas asi com
 pip3 install -r requirements.txt
 ```
 
-4. Luego debemos generar el esquema de la base de datos, por lo que ejecutamos el comando 
+4. Luego copiamos el ejemplo de nuestro archivo **.dev.env** dentro de un archivo .env dentro el mismo directorio donde esta **main.py**, y seteamos las variables de entorno con nuestras propias variables.
+
+5. Luego debemos generar el esquema de la base de datos, por lo que ejecutamos el comando 
 ```
 prisma generate
 ```
