@@ -65,6 +65,16 @@ export class RecipeController {
   }
 
   @ApiOperation({
+    summary: 'Use it to get one recommendation',
+    description: 'Use it to get one recommendation (logged users only)',
+  })
+  @Get('recommendations')
+  @UseGuards(JwtAuthGuard)
+  recommend(@User() user: UserPayload) {
+    return this.recipeService.getRecommendations(user);
+  }
+
+  @ApiOperation({
     summary: 'Use it to get one by id',
     description: 'Use it to get one by id',
   })

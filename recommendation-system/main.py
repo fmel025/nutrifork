@@ -6,6 +6,7 @@ from surprise.model_selection import train_test_split
 from surprise import accuracy
 from contextlib import asynccontextmanager
 import pandas as pd
+from fastapi_utilities import repeat_at, repeat_every
 
 prisma = Prisma()
 model = SVD()
@@ -21,6 +22,11 @@ def format_data_for_surprise(data):
     trainset = dataset.build_full_trainset()
     return trainset
 
+# Function to format data from prisma to dictionaries.
+def format_db_data(data): 
+    return [{'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating} for item in data]
+
+# This runs when the app is initialized, so we poblify the model
 @asynccontextmanager
 async def main(app: FastAPI):
     await prisma.connect()
@@ -31,39 +37,29 @@ async def main(app: FastAPI):
     model.fit(trainset)
     print(':: Info model trained successfully')
 
+    await update_model()
     yield
 
     await prisma.disconnect()
 
-app = FastAPI(lifespan=main)
+app = FastAPI(lifespan=main, description='Sistema de recomendaciones de nutrifork', title='Nutrifork ML API')
 
-@app.post("/rate")
-async def rate(recipe_id: str, user_id: str, rating: float):    
+# Cronjob to retrain the model
+@repeat_every(seconds=60*10)
+async def update_model():
+    print(":: Updating model")
     data = await prisma.rating.find_many()
     trainset = format_data_for_surprise(data)
     model.fit(trainset)
-    
-    return {"message": "Rating added and model updated"}
+    print(':: Info model updated successfully')
 
-@app.put("/rate")
-async def update_rating(recipe_id: str, user_id: str, rating: float):
-    await prisma.rating.update(where={"userId_recipeId": {"userId": user_id, "recipeId": recipe_id}}, data={"rating": rating})
-    
-    data = await prisma.rating.find_many()
-    trainset = format_data_for_surprise(data)
-    model.fit(trainset)
-    
-    return {"message": "Rating updated and model updated"}
-
-@app.get("/recommend")
+@app.get("/recommend", tags=['Recomendaciones'], description='Use it to get recommendations', summary='Get recommendations')
 async def recommend(user_id: str, num_recommendations: int = 5):
     data = await prisma.rating.find_many()
 
-    new_data = []
-    for item in data:
-        new_data.append({'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating})
+    formated_data = format_db_data(data)
 
-    df = pd.DataFrame(new_data)
+    df = pd.DataFrame(formated_data)
     all_items = df['recipeId'].unique()
     
     # Check if user exists
