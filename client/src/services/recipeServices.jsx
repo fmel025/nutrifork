@@ -36,7 +36,6 @@ export const getAllRecipes = async (category = '') => {
     }
 };
 
-
 export const getRecipeById = async (recipeId) => {
     try {
         const token = localStorage.getItem('token');

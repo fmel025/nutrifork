@@ -26,7 +26,7 @@ export default function Avatar({ width }) {
     return (
         <div className={`avatar ${width}`}>
             <div className="w-full rounded-full">
-                <img src={!loading && user.avatar ? `${user.avatar}` : "/src/assets/no-picture.webp"} alt="Avatar" />
+                <img src={!loading && user.avatar ? `${user.avatar}` : "no-picture.webp"} alt="Avatar" />
             </div>
         </div>
     );

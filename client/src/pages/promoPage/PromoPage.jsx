@@ -32,7 +32,7 @@ export default function PromoPage() {
             <Navbar />
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col lg:flex-row-reverse items-center">
-                    <img src="/src/assets/food-3.webp" className="w-full max-w-2xl lg:max-w-3xl lg:w-2/4 lg:ml-8" alt="Comida" />
+                    <img src="food-3.webp" className="w-full max-w-2xl lg:max-w-3xl lg:w-2/4 lg:ml-8" alt="Comida" />
                     <div className="w-full lg:w-1/2 px-4 lg:px-8 mt-4 lg:mt-0 lg:mr-8 text-left">
                         <h1 className="text-5xl font-bold mb-4 text-primary">Comida saludable y deliciosa</h1>
                         <p className="py-6">La comida saludable no tiene por qué ser aburrida. Existen innumerables opciones deliciosas que benefician tu cuerpo y mente.</p>
@@ -48,7 +48,7 @@ export default function PromoPage() {
                 <h1 className="text-2xl font-bold mb-8">Platillos populares</h1>
                 <div className="flex flex-row justify-center items-center space-x-4">
                     <div className="flex flex-col items-center">
-                        <img src="/src/assets/potatoes.webp" alt="Papas" className="w-42 h-72 px-20"/>
+                        <img src="potatoes.webp" alt="Papas" className="w-42 h-72 px-20"/>
                     </div>
                     <div className="flex w-3/5 gap-2 ">
                         {recipes.slice(0, 3).map(recipe => (
@@ -58,14 +58,14 @@ export default function PromoPage() {
 
                     
                     <div className="flex flex-col items-center">
-                        <img src="/src/assets/leaf.webp" alt="Hojas" className="w-42 h-72 px-20"/>
+                        <img src="leaf.webp" alt="Hojas" className="w-42 h-72 px-20"/>
                     </div>
                 </div>
             </div>
 
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex-col lg:flex-row items-center">
-                    <img src="/src/assets/food-4.webp" className="w-full max-w-md lg:max-w-lg lg:w-1/2 lg:ml-8" alt="Vegetales" />
+                    <img src="food-4.webp" className="w-full max-w-md lg:max-w-lg lg:w-1/2 lg:ml-8" alt="Vegetales" />
                     <div className="w-full lg:w-1/2 px-4 lg:px-8 mt-6 lg:mt-0 lg:ml-8 text-left lg:text-right">
                         <h1 className="text-5xl font-bold mb-4 text-primary">Descubre cientos de recetas en NutriFork</h1>
                         <p className="py-6">Queremos ayudar a las personas a mejorar su salud y bienestar a través de una alimentación más consciente, adaptada a sus preferencias y necesidades.</p>

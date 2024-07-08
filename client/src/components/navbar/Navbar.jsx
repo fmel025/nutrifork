@@ -8,7 +8,7 @@ export default function Navbar() {
     return (
         <div className="navbar bg-white z-50 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] font-Poppins">
             <div className="flex-1 px-5">
-                <Link to={'/'}><img className="w-20" src="/src/assets/nutrifork-logo-cut.webp" alt="logo" /></Link>
+                <Link to={'/'}><img className="w-20" src="nutrifork-logo-cut.webp" alt="logo" /></Link>
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal gap-4">

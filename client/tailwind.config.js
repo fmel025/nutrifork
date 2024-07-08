@@ -19,7 +19,7 @@ export default {
         "danger": "#EF4444",
       },
       backgroundImage: {
-        "green": "url('/src/assets/green.svg')",
+        "green": "url('green.svg')",
       },
       fontFamily: {
         Poppins: ["Poppins, sans-serif"],

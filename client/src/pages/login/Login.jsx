@@ -18,9 +18,10 @@ export default function Login() {
                 navigate('/');
                 window.location.reload();
             } else {
-                console.log('Login failed. Invalid credentials.');
+                alert("Login failed. Invalid credentials.");
             }
         } catch (error) {
+            alert("Credenciales incorrectas.");
             console.error('An error occurred during login:', error);
         }
     };
@@ -45,8 +46,8 @@ export default function Login() {
                 </section>
 
                 <section className="flex flex-col items-center justify-center">
-                    <img className="w-52 lg:w-44 p-4" src="/src/assets/nutrifork-logo-cut.webp" alt="NutriFork logo" />
-                    <img className="w-80 hidden lg:block" src="/src/assets/food-1.webp" alt="Spaghetti" />
+                    <img className="w-52 lg:w-44 p-4" src="nutrifork-logo-cut.webp" alt="NutriFork logo" />
+                    <img className="w-80 hidden lg:block" src="food-1.webp" alt="Spaghetti" />
                 </section>
             </main>
         </div>
