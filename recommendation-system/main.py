@@ -6,7 +6,7 @@ from surprise.model_selection import train_test_split
 from surprise import accuracy
 from contextlib import asynccontextmanager
 import pandas as pd
-from fastapi_utilities import repeat_at, repeat_every
+from fastapi_utilities import repeat_every
 
 prisma = Prisma()
 model = SVD()
@@ -26,7 +26,7 @@ def format_data_for_surprise(data):
 def format_db_data(data): 
     return [{'userId': item.userId,'recipeId': item.recipeId, 'rating': item.rating} for item in data]
 
-# This runs when the app is initialized, so we poblify the model
+# This runs when the app is initialized, so we seed the model with data
 @asynccontextmanager
 async def main(app: FastAPI):
     await prisma.connect()
