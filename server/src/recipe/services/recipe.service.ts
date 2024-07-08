@@ -59,14 +59,14 @@ export class RecipeService {
     const { id } = user;
 
     try {
-      const response = await axios.get(
+      const response = await axios.get<{ recommendations: string[] }>(
         `${process.env.RECOMMENDATION_API_URL}/recommend?user_id=${id}`,
       );
 
-      const data = response.data as string[];
+      const data = response.data.recommendations as string[];
 
       if (data.length > 0) {
-        const recipe = recipeRepository.findById(data[0]);
+        const recipe = await recipeRepository.findById(data[0]);
         return successResponse(
           plainToInstance(RecipeResponseDoc, recipe, {
             excludeExtraneousValues: true,
