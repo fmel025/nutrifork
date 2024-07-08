@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Get,
@@ -20,15 +21,15 @@ import { UserPayload } from '@Common/types';
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 
-  @ApiOperation({
-    summary: 'Do not use',
-    description: 'Do not use, only for testing purposes',
-  })
-  @Post()
-  @UseGuards(JwtAuthGuard)
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
-  }
+  // @ApiOperation({
+  //   summary: 'Do not use',
+  //   description: 'Do not use, only for seeding the recipes purposes',
+  // })
+  // @Post()
+  // @UseGuards(JwtAuthGuard)
+  // create(@Body() createRecipeDto: CreateRecipeDto) {
+  //   return this.recipeService.create(createRecipeDto);
+  // }
 
   @ApiOperation({
     summary: 'Use it to get all recipes',
