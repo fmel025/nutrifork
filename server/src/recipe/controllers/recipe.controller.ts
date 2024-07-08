@@ -68,6 +68,16 @@ export class RecipeController {
     summary: 'Use it to get one by id',
     description: 'Use it to get one by id',
   })
+  @Get('recommendations')
+  @UseGuards(JwtAuthGuard)
+  recommend(@User() user: UserPayload) {
+    return this.recipeService.getRecommendations(user);
+  }
+
+  @ApiOperation({
+    summary: 'Use it to get one by id',
+    description: 'Use it to get one by id',
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.recipeService.findOne(id);
