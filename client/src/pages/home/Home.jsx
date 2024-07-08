@@ -25,7 +25,6 @@ export default function Home() {
     };
 
     const handleCategoryClick = (category) => {
-        // If the same category is clicked again, reset the filter
         if (category === selectedCategory) {
             setSelectedCategory('');
             fetchRecipes();

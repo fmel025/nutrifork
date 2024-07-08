@@ -85,7 +85,6 @@ export default function Settings() {
         try {
             const { fullName, username, email, password, allergies, preferences } = userData;
             await updateUser({ fullName, username, email, password, allergies, preferences });
-            console.log('Datos actualizados.');
         } catch (error) {
             console.error('Error al actualizar datos: ', error);
         }

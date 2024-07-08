@@ -92,3 +92,24 @@ export const updateRating = async (id, rating) => {
         throw error;
     }
 };
+
+export const getRecommendation = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/recipe/recommendations`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            console.error("Unexpected status code:", response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+        return null;
+    }
+}
